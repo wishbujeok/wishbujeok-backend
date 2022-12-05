@@ -51,3 +51,6 @@ jobs:
         port: ${{ secrets.BACKEND_PORT }}
         script: |
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/wishbujeok_backend
+            docker stop ${{ secrets.BACKEND_PROJECT_NAME }}
+            docker run --name=${{ secrets.BACKEND_PROJECT_NAME }} -d --rm -p 8080:8080 -e JAVA_OPTS=-Djasypt.encryptor.password=${{ secrets.JASYPT_KEY }} ${{ secrets.DOCKERHUB_USERNAME  }}/wishbujeok_backend
+            docker image prune -f
