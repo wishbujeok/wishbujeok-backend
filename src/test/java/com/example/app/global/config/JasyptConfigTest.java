@@ -1,12 +1,12 @@
-package com.example.demo.global.config;
+package com.example.app.global.config;
 
+import com.example.app.config.JasyptConfig;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
-class JasyptConfigTest extends JasyptConfig{
+class JasyptConfigTest extends JasyptConfig {
 
     @Test
     public void jasypt_encrypt_decrypt_test() {
