@@ -1,0 +1,14 @@
+spring:
+  profiles:
+    active: local
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+logging:
+  level:
+    root: info
+    site.codecare: debug
+    org.hibernate.type.descriptor.sql: trace
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
+    password:
