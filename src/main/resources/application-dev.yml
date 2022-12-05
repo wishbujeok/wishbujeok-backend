@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:mariadb://101.101.218.239:3306/wishbujeok_dev?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul
     username: wishbujeok
-    password: ENC(t/9EkcwQxq1jXVDfxGmjrVTyMTT/se4o)
+    password: ENC(kE585+EAXwJuq1x3d/dCTW9Jekod8ux2)
   jpa:
     hibernate:
       ddl-auto: update
