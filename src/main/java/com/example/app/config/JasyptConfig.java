@@ -1,4 +1,4 @@
-package com.example.demo.global.config;
+package com.example.app.config;
 
 import org.jasypt.encryption.StringEncryptor;
 import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;
