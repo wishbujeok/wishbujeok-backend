@@ -6,16 +6,20 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 @Getter
 @NoArgsConstructor
 @SuperBuilder
 public class Bujeok extends BaseEntity {
-    long userId;
-    long replyId;
-    int category;
-    String content;
-    String frontUrl;
-    String backUrl;
+    private Long userId;
+    private Long replyId;
+    @ManyToOne
+    @JoinColumn(name = "id")
+    private Category category;
+    private String content;
+    private String backUrl;
 }
