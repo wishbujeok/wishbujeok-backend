@@ -1,4 +1,4 @@
-package com.example.app.bujeok.repository;
+package com.example.app.Category.repository;
 
 import com.example.app.Category.entity.Category;
 import org.springframework.data.jpa.repository.JpaRepository;

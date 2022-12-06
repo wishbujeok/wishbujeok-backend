@@ -1,7 +1,7 @@
-package com.example.app.bujeok.service;
+package com.example.app.Category.Service;
 
 import com.example.app.Category.entity.Category;
-import com.example.app.bujeok.repository.CategoryRepository;
+import com.example.app.Category.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

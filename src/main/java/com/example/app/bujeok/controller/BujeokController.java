@@ -6,7 +6,7 @@ import com.example.app.Category.entity.Category;
 import com.example.app.bujeok.entity.dto.BujeokCreateDto;
 import com.example.app.bujeok.entity.dto.response.BujeokCreateResponse;
 import com.example.app.bujeok.service.BujeokService;
-import com.example.app.bujeok.service.CategoryService;
+import com.example.app.Category.Service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
