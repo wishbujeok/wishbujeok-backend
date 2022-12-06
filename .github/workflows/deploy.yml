@@ -40,3 +40,17 @@ jobs:
       run: |
         docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/wishbujeok_backend .
         docker push ${{ secrets.DOCKERHUB_USERNAME }}/wishbujeok_backend
+
+
+    - name: executing remote ssh commands using password
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.BACKEND_HOST }}
+        username: ${{ secrets.BACKEND_USERNAME }}
+        password: ${{ secrets.BACKEND_PASSWORD }}
+        port: ${{ secrets.BACKEND_PORT }}
+        script: |
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/wishbujeok_backend
+            docker stop ${{ secrets.BACKEND_PROJECT_NAME }}
+            docker run --name=${{ secrets.BACKEND_PROJECT_NAME }} -d --rm -p 8080:8080 -e JAVA_OPTS=-Djasypt.encryptor.password=${{ secrets.JASYPT_KEY }} ${{ secrets.DOCKERHUB_USERNAME  }}/wishbujeok_backend
+            docker image prune -f
