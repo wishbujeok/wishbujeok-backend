@@ -3,6 +3,7 @@ package com.example.app.bujeok.entity;
 import com.example.app.base.entity.BaseEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@SuperBuilder
 @NoArgsConstructor
 public class Category extends BaseEntity {
     @OneToMany(mappedBy = "category")

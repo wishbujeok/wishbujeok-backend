@@ -1,6 +1,7 @@
 package com.example.app.bujeok.entity.dto.mapper;
 
 import com.example.app.bujeok.entity.Bujeok;
+import com.example.app.bujeok.entity.Category;
 import com.example.app.bujeok.entity.dto.BujeokCreateDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -16,6 +17,6 @@ public interface BujeokCreateMapper {
     @Mapping(target= "userId", ignore = true)
     @Mapping(target = "replyId", ignore = true)
     @Mapping(target = "backUrl", ignore = true)
-    @Mapping(target = "frontUrl", expression = "java(bujeokCreateDTO.getCategory().get + \".jpg\")")
-    Bujeok bujeokCraeteDTOToEntity(BujeokCreateDTO bujeokCreateDTO);
+    @Mapping(source="cate", target="category")
+    Bujeok bujeokCraeteDTOToEntity(BujeokCreateDTO bujeokCreateDTO, Category cate);
 }
