@@ -4,7 +4,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.http.HttpStatus;
 
-public class ApiResult<T> {
+public class  ApiResult<T> {
     private final boolean success;
     private final T response;
     private final ApiError error;

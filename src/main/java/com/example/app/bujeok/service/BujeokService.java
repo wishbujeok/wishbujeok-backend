@@ -1,6 +1,13 @@
 package com.example.app.bujeok.service;
 
+import com.example.app.Category.entity.Category;
+import com.example.app.Category.entity.dto.CategoryDto;
+import com.example.app.Category.entity.mapper.CategoryDtoMapper;
 import com.example.app.bujeok.entity.Bujeok;
+import com.example.app.bujeok.entity.dto.BujeokCreateDto;
+import com.example.app.bujeok.entity.dto.BujeokDto;
+import com.example.app.bujeok.entity.dto.mapper.BujeokCreateMapper;
+import com.example.app.bujeok.entity.dto.mapper.BujeokDtoMapper;
 import com.example.app.bujeok.repository.BujeokRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,8 +36,17 @@ public class BujeokService {
 
 
 
-//    public Bujeok create(Category category, BujeokCreateDto bujeokCreateDTO){
-//
-//    }
+    public BujeokDto create(CategoryDto categoryDto, BujeokCreateDto bujeokCreateDTO){
+        Category category = CategoryDtoMapper.INSTANCE.CategoryDtoToCategory(categoryDto);
+
+        Bujeok bujeok = BujeokCreateMapper.INSTANCE.bujeokCraeteDTOToEntity(bujeokCreateDTO, category);
+//        Bujeok bujeok = Bujeok.builder()
+//                .category(category)
+//                .content(bujeokCreateDTO.getContent())
+//                .build();
+        bujeokRepository.save(bujeok);
+
+        return BujeokDtoMapper.INSTANCE.BujeokToBujeokDto(bujeok);
+    }
 
 }

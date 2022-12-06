@@ -1,16 +1,35 @@
 package com.example.app.Category.Service;
 
 import com.example.app.Category.entity.Category;
+import com.example.app.Category.entity.dto.CategoryDto;
+import com.example.app.Category.entity.mapper.CategoryDtoMapper;
 import com.example.app.Category.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class CategoryService {
     private final CategoryRepository categoryRepository;
     
-    public Category findById(Long id){
-        return categoryRepository.findById(id).get();
-    } 
+    public Optional<CategoryDto> findById(Long id){
+        Optional<Category> found = categoryRepository.findById(id);
+        if(found.isEmpty()){
+            return null;
+            // 예외 처리
+        }
+        return Optional.ofNullable(CategoryDtoMapper.INSTANCE.CategoryToCategoryDto(found.get()));
+    }
+
+    public CategoryDto create(String frontUrl){
+        Category category = Category.builder()
+                                .frontUrl(frontUrl)
+                                .build();
+
+        categoryRepository.save(category);
+
+        return CategoryDtoMapper.INSTANCE.CategoryToCategoryDto(category);
+    }
 }
