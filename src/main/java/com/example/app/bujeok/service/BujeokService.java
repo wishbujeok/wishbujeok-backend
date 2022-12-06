@@ -1,9 +1,6 @@
 package com.example.app.bujeok.service;
 
 import com.example.app.bujeok.entity.Bujeok;
-import com.example.app.bujeok.entity.Category;
-import com.example.app.bujeok.entity.dto.BujeokCreateDTO;
-import com.example.app.bujeok.entity.dto.response.BujeokCreateResponse;
 import com.example.app.bujeok.repository.BujeokRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,7 +29,7 @@ public class BujeokService {
 
 
 
-//    public Bujeok create(Category category, BujeokCreateDTO bujeokCreateDTO){
+//    public Bujeok create(Category category, BujeokCreateDto bujeokCreateDTO){
 //
 //    }
 

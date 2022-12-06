@@ -1,8 +1,9 @@
 package com.example.app.bujeok;
 
 import com.example.app.bujeok.entity.Bujeok;
-import com.example.app.bujeok.entity.Category;
-import com.example.app.bujeok.entity.dto.BujeokCreateDTO;
+import com.example.app.Category.entity.Category;
+import com.example.app.bujeok.entity.dto.BujeokCreateDto;
+import com.example.app.bujeok.entity.dto.BujeokDto;
 import com.example.app.bujeok.entity.dto.mapper.BujeokCreateMapper;
 import org.junit.jupiter.api.Test;
 
@@ -12,7 +13,7 @@ public class BujeokMapperTest {
     @Test
     public void BujeokCreateDTOToBujeokMapper() {
 
-        BujeokCreateDTO bujeokCreateDTO = BujeokCreateDTO.builder()
+        BujeokCreateDto bujeokCreateDTO = BujeokCreateDto.builder()
                 .cheerUp("힘내")
                 .content("내용입니다.")
                 .build();

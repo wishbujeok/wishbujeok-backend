@@ -1,13 +1,13 @@
-package com.example.app.bujeok.entity;
+package com.example.app.Category.entity;
 
 import com.example.app.base.entity.BaseEntity;
+import com.example.app.bujeok.entity.Bujeok;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity

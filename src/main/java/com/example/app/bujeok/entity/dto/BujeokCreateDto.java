@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class BujeokCreateDTO { // 프론트 -> controller -> service
+public class BujeokCreateDto { // 프론트 -> controller -> service
     private int category;
     private String content;
     private String cheerUp;
