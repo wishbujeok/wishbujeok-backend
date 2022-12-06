@@ -18,7 +18,7 @@ public class Bujeok extends BaseEntity {
     private Long userId;
     private Long replyId;
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "category_id")
     private Category category;
     private String content;
     private String backUrl;
