@@ -10,6 +10,7 @@ import com.example.app.bujeok.entity.dto.response.BujeokCreateResponse;
 import com.example.app.bujeok.service.BujeokService;
 import com.example.app.Category.Service.CategoryService;
 import com.example.app.error.NotFoundException;
+import com.example.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -56,7 +57,10 @@ public class BujeokController {
      */
     @PostMapping()
     public ApiResult<BujeokDto> createBujeok(@RequestBody BujeokCreateDto bujeokCreateDTO){
-        Optional<CategoryDto> found = categoryService.findById(bujeokCreateDTO.getCategory());// 입력 받을지 여부 후에 결정
+        long count = categoryService.getCategoryCount();
+        long categoryNum = Util.getRandomNum(count);
+
+        Optional<CategoryDto> found = categoryService.findById(categoryNum);// 입력 받을지 여부 후에 결정
 
         BujeokDto bujeokDto = bujeokService.create(found.get(), bujeokCreateDTO);
 

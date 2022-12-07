@@ -32,4 +32,9 @@ public class CategoryService {
 
         return CategoryDtoMapper.INSTANCE.CategoryToCategoryDto(category);
     }
+
+    public long getCategoryCount() {
+        long count = categoryRepository.count();
+        return count;
+    }
 }
