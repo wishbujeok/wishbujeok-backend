@@ -6,6 +6,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class BujeokCreateResponse {
-    String userName;
-    String otherWish;
+    private String userName;
+    private String otherWish;
+    private Long otherWishId;
 }

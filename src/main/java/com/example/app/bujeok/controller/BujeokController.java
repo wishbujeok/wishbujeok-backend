@@ -12,6 +12,7 @@ import com.example.app.Category.Service.CategoryService;
 import com.example.app.error.NotFoundException;
 import com.example.util.Util;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +24,7 @@ import static com.example.app.base.api.ApiResult.OK;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("bujeok-management/bujeok")
+@Slf4j
 public class BujeokController {
 
     private final BujeokService bujeokService;
@@ -45,6 +47,7 @@ public class BujeokController {
 
         BujeokCreateResponse bujeokCreateResponse = BujeokCreateResponse.builder()
                 .otherWish(bujeokDto.getContent())
+                .otherWishId(bujeokDto.getId())
                 .userName(username)
                 .build();
 
@@ -57,8 +60,12 @@ public class BujeokController {
      */
     @PostMapping()
     public ApiResult<BujeokDto> createBujeok(@RequestBody BujeokCreateDto bujeokCreateDTO){
+        log.info("otherWishId : "+bujeokCreateDTO.getOtherWishId());
+
         long count = categoryService.getCategoryCount();
         long categoryNum = Util.getRandomNum(count);
+
+        // 후에 otherWishId를 통해 다른사람 소원에 대한 응원 메시지 저장 기능 추가
 
         Optional<CategoryDto> found = categoryService.findById(categoryNum);// 입력 받을지 여부 후에 결정
 

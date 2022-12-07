@@ -9,4 +9,5 @@ import lombok.Getter;
 public class BujeokCreateDto { // 프론트 -> controller -> service
     private String content;
     private String cheerUp;
+    private Long otherWishId;
 }
