@@ -19,19 +19,27 @@ import java.util.Optional;
 public class BujeokService {
     private final BujeokRepository bujeokRepository;
 
-    public Bujeok getOtherBujeok(){
+    public Optional<BujeokDto> getOtherBujeok(){
 
         Long id = 1L; // 후에 다른사람의 부적 선택하는 비즈니스 로직 추가 예정
         Optional<Bujeok> byId = bujeokRepository.findById(1L);
 
-        return byId.get();
+        if(byId.isEmpty()){
+            return Optional.ofNullable(null);
+        }
+
+        return Optional.ofNullable(BujeokDtoMapper.INSTANCE.BujeokToBujeokDto(byId.get()));
     }
 
-    public Bujeok findById(long id){
+    public Optional<BujeokDto> findById(long id){
 
         Optional<Bujeok> byId = bujeokRepository.findById(id);
 
-        return byId.get();
+        if(byId.isEmpty()){
+            return Optional.ofNullable(null);
+        }
+
+        return Optional.ofNullable(BujeokDtoMapper.INSTANCE.BujeokToBujeokDto(byId.get()));
     }
 
 
@@ -40,10 +48,7 @@ public class BujeokService {
         Category category = CategoryDtoMapper.INSTANCE.CategoryDtoToCategory(categoryDto);
 
         Bujeok bujeok = BujeokCreateMapper.INSTANCE.bujeokCraeteDTOToEntity(bujeokCreateDTO, category);
-//        Bujeok bujeok = Bujeok.builder()
-//                .category(category)
-//                .content(bujeokCreateDTO.getContent())
-//                .build();
+
         bujeokRepository.save(bujeok);
 
         return BujeokDtoMapper.INSTANCE.BujeokToBujeokDto(bujeok);

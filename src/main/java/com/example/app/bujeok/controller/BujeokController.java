@@ -9,11 +9,14 @@ import com.example.app.bujeok.entity.dto.BujeokDto;
 import com.example.app.bujeok.entity.dto.response.BujeokCreateResponse;
 import com.example.app.bujeok.service.BujeokService;
 import com.example.app.Category.Service.CategoryService;
+import com.example.app.error.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
+import static com.example.app.base.api.ApiResult.ERROR;
 import static com.example.app.base.api.ApiResult.OK;
 
 @RestController
@@ -29,11 +32,19 @@ public class BujeokController {
      * */
     @GetMapping()
     public ApiResult<BujeokCreateResponse> getCreatePage(){
-        Bujeok bujeok = bujeokService.getOtherBujeok();
+        Optional<BujeokDto> found = bujeokService.getOtherBujeok();
+
+        if(found.isEmpty()){ // 디비에 저장된 부적이 하나도 없을 경우
+            System.out.println("asdasd");
+            return ERROR(new NotFoundException(Bujeok.class), HttpStatus.NO_CONTENT);
+        }
+
+        BujeokDto bujeokDto = found.get();
+
         String username = "user1"; // 후에 변경
 
         BujeokCreateResponse bujeokCreateResponse = BujeokCreateResponse.builder()
-                .otherWish(bujeok.getContent())
+                .otherWish(bujeokDto.getContent())
                 .userName(username)
                 .build();
 
@@ -46,7 +57,6 @@ public class BujeokController {
      */
     @PostMapping()
     public ApiResult<BujeokDto> createBujeok(@RequestBody BujeokCreateDto bujeokCreateDTO){
-        System.out.println("asd " + bujeokCreateDTO.getContent());
         Optional<CategoryDto> found = categoryService.findById(bujeokCreateDTO.getCategory());// 입력 받을지 여부 후에 결정
 
         BujeokDto bujeokDto = bujeokService.create(found.get(), bujeokCreateDTO);

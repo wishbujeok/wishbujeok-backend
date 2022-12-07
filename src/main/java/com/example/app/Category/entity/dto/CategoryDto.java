@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @ToString(callSuper = true)
 public class CategoryDto extends BaseEntity {
-    @OneToMany(mappedBy = "category")
-    private List<Bujeok> bujeoks;
+//    @OneToMany(mappedBy = "category")
+//    private List<Bujeok> bujeoks;
     private String frontUrl;
 }
