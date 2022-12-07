@@ -35,8 +35,7 @@ public class BujeokController {
         Optional<BujeokDto> found = bujeokService.getOtherBujeok();
 
         if(found.isEmpty()){ // 디비에 저장된 부적이 하나도 없을 경우
-            System.out.println("asdasd");
-            return ERROR(new NotFoundException(Bujeok.class), HttpStatus.NO_CONTENT);
+            ERROR(new NotFoundException(Bujeok.class), HttpStatus.NO_CONTENT);
         }
 
         BujeokDto bujeokDto = found.get();

@@ -18,7 +18,5 @@ import java.util.List;
 @NoArgsConstructor
 @ToString(callSuper = true)
 public class Category extends BaseEntity {
-    @OneToMany(mappedBy = "category")
-    private List<Bujeok> bujeoks;
     private String frontUrl;
 }
