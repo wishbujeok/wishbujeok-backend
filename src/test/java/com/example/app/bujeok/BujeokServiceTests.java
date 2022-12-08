@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Transactional
-public class BujeokServiceTests {
+public class  BujeokServiceTests {
     @Autowired
     private BujeokService bujeokService;
     @Autowired
