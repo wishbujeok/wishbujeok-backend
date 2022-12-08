@@ -32,9 +32,6 @@ public class ReplyService {
 
         Reply reply = ReplyCreateMapper.INSTANCE.replyCreateToReply(content,bujeok);
 
-        log.info("bujeok : "+bujeok);
-        log.info("reply : "+reply);
-
         replyRepository.save(reply);
 
         return ReplyDtoMapper.INSTANCE.replyToReplyDto(reply);

@@ -1,6 +1,7 @@
 package com.example.app.reply;
 
 import com.example.app.bujeok.entity.Bujeok;
+import com.example.app.bujeok.entity.dto.BujeokCreateDto;
 import com.example.app.bujeok.entity.dto.mapper.BujeokDtoMapper;
 import com.example.app.bujeok.repository.BujeokRepository;
 import com.example.app.bujeok.service.BujeokService;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 
+import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ReplyMapperTests {
@@ -53,5 +55,19 @@ public class ReplyMapperTests {
 
         assertThat(reply.getBujeok()).isEqualTo(bujeok);
         assertThat(reply.getContent()).isEqualTo(content);
+    }
+
+    @Test
+    void bujeokCreateDtoToReplyCreateDto(){
+        BujeokCreateDto bujeokCreateDTO = BujeokCreateDto.builder()
+                .cheerUp("힘내")
+                .content("내용입니다.")
+                .otherWishId(1L)
+                .build();
+
+        ReplyCreateDto replyCreateDto = ReplyCreateMapper.INSTANCE.bujeokCreateDtoToReplyCreateDto(bujeokCreateDTO);
+
+        assertThat(replyCreateDto.getCheerUp()).isEqualTo(replyCreateDto.getCheerUp());
+        assertThat(replyCreateDto.getOtherWishId()).isEqualTo(replyCreateDto.getOtherWishId());
     }
 }

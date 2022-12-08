@@ -9,7 +9,7 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @NoArgsConstructor
 @SuperBuilder
-@ToString(callSuper = true)
+@ToString
 public class ReplyDto {
     private Long id;
     private String content;
