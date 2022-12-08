@@ -6,10 +6,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/test")
+//@RequestMapping("/test")
 public class TestController {
     private final TestRepository testRepository;
 
@@ -19,5 +20,10 @@ public class TestController {
         t.setName("qwe");
         testRepository.save(t);
         return new ResponseEntity<>("success", HttpStatus.OK);
+    }
+    @GetMapping("/kakaoLogin")
+    public String test123(@RequestParam(value = "code") String code){
+        System.out.println(code);
+        return "eee";
     }
 }

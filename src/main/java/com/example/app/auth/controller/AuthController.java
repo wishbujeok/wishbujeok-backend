@@ -19,7 +19,7 @@ public class AuthController {
     @GetMapping("/{provider}/login")
     public JwtTokenDTO login(@PathVariable("provider") String provider,
                              @RequestParam(value = "code") String authorizeCode) {
-//        return getProvider(provider).login(authorizeCode);
+        
         return getProvider(provider).login(authorizeCode);
     }
 
@@ -27,11 +27,11 @@ public class AuthController {
         switch (provider) {
             case KAKAO:
                 return kakaoOauthService;
+//                TODO : GOOGLE 로그인 추가하기
 //            case GOOGLE:
 //                return googleOauthService;
         }
 
-        // 기본 oauth 로그인 값
         return kakaoOauthService;
     }
 }

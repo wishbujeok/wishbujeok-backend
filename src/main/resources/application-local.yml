@@ -6,3 +6,13 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create
+oauth:
+  provider:
+    kakao:
+      rule:
+        grant_type: authorization_code
+        client_id: 00ad4de0aee580b3d437724013c41cca
+        redirect_uri: http://localhost:3000/kakaoLogin
+        client_secret: oj2pHvPdTTWjCUwIjgNhVXYjnsGgum9c
+        prefix: K
+        postfix: kakao.com
