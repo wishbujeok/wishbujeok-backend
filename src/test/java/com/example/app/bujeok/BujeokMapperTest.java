@@ -28,7 +28,7 @@ public class BujeokMapperTest {
         Bujeok bujeok = BujeokCreateMapper.INSTANCE.bujeokCraeteDTOToEntity(bujeokCreateDTO,category);
 
         assertThat(bujeok.getContent()).isEqualTo(bujeokCreateDTO.getContent());
-        assertThat(bujeok.getCategory().getFrontUrl()).isEqualTo(bujeokCreateDTO.getCategory()+".jpg");
+        assertThat(bujeok.getCategory().getFrontUrl()).isEqualTo(category.getFrontUrl());
 //        assertThat(bujeok.getCategory()).isEqualTo(bujeokCreateDTO.getCategory());
     }
 }
