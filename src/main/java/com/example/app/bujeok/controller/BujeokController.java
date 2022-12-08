@@ -70,10 +70,16 @@ public class BujeokController {
         long count = categoryService.getCategoryCount();
         long categoryNum = Util.getRandomNum(count);
 
-        // 후에 otherWishId를 통해 다른사람 소원에 대한 응원 메시지 저장 기능 추가
-        ReplyCreateDto replyCreateDto = ReplyCreateMapper.INSTANCE.bujeokCreateDtoToReplyCreateDto(bujeokCreateDTO);
-        ReplyDto replyDto = replyService.create(replyCreateDto);
-        log.info("reply : "+replyDto);
+        if(bujeokService.findById(bujeokCreateDTO.getOtherWishId()).isEmpty()){ // otherWishId에 해당하는 부적이 없을때
+            log.info("bujeok이 비었음");
+        }
+        else{
+            // 후에 otherWishId를 통해 다른사람 소원에 대한 응원 메시지 저장 기능 추가
+            ReplyCreateDto replyCreateDto = ReplyCreateMapper.INSTANCE.bujeokCreateDtoToReplyCreateDto(bujeokCreateDTO);
+            ReplyDto replyDto = replyService.create(replyCreateDto);
+            log.info("reply : "+replyDto);
+        }
+
 
         Optional<CategoryDto> found = categoryService.findById(categoryNum);// 입력 받을지 여부 후에 결정
 

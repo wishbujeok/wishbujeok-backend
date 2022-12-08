@@ -30,7 +30,12 @@ public class ReplyService {
         Bujeok bujeok = found.get();
         String content = replyCreateDto.getCheerUp();
 
+        System.out.println("bujeok : " + bujeok);
+        log.info("bujeok : " + bujeok);
+
         Reply reply = ReplyCreateMapper.INSTANCE.replyCreateToReply(content,bujeok);
+
+        log.info("reply : " + reply);
 
         replyRepository.save(reply);
 

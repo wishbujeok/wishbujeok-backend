@@ -36,6 +36,7 @@ public class ReplyServiceTests {
         Bujeok bujeok = BujeokDtoMapper.INSTANCE.BujeokDtoToBujeok(found);
 
         assertThat(replyDto.getBujeok().getId()).isEqualTo(bujeok.getId());
+        System.out.println(replyDto.getBujeok().getId());
         assertThat(replyDto.getContent()).isEqualTo(replyCreateDto.getCheerUp());
     }
 }
