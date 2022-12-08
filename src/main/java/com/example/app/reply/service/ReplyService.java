@@ -28,13 +28,14 @@ public class ReplyService {
             // 예외 처리
         }
         Bujeok bujeok = found.get();
+
         String content = replyCreateDto.getCheerUp();
 
         System.out.println("bujeok : " + bujeok);
         log.info("bujeok : " + bujeok);
 
         Reply reply = ReplyCreateMapper.INSTANCE.replyCreateToReply(content,bujeok);
-
+        bujeok.setReply(reply);
         log.info("reply : " + reply);
 
         replyRepository.save(reply);
