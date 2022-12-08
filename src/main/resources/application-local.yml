@@ -1,8 +1,8 @@
 spring:
   datasource:
     url: jdbc:mariadb://127.0.0.1:3306/wishbujeok_local?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul
-    username: wishbujeok
-    password: wishbujeok1234
+    username: root
+    password: race1020
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
