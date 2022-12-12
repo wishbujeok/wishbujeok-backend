@@ -6,3 +6,12 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+oauth:
+  provider:
+    kakao:
+      login_uri: https://kauth.kakao.com/oauth/token
+      user_info_uri: https://kapi.kakao.com/v2/user/me
+      grant_type: authorization_code
+      client_id: 00ad4de0aee580b3d437724013c41cca
+      redirect_uri: https://wishbujeok.site/kakaoLogin
+      client_secret: oj2pHvPdTTWjCUwIjgNhVXYjnsGgum9c
