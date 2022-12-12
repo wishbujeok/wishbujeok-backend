@@ -15,3 +15,6 @@ oauth:
       client_id: 00ad4de0aee580b3d437724013c41cca
       redirect_uri: https://wishbujeok.site/kakaoLogin
       client_secret: oj2pHvPdTTWjCUwIjgNhVXYjnsGgum9c
+      rule:
+        prefix: K
+        postfix: kakao.com

@@ -13,6 +13,3 @@ jasypt:
     bean: jasyptStringEncryptor
     password:
 
-#      rule:
-#        prefix: K
-#        postfix: kakao.com
