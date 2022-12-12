@@ -15,8 +15,8 @@ public interface BujeokCreateMapper {
     @Mapping(target= "id", ignore = true)
     @Mapping(target = "modifyDate", ignore = true)
     @Mapping(target= "userId", ignore = true)
-    @Mapping(target = "replyId", ignore = true)
     @Mapping(target = "backUrl", ignore = true)
+    @Mapping(target = "reply", ignore = true)
     @Mapping(source="cate", target="category")
     Bujeok bujeokCraeteDTOToEntity(BujeokCreateDto bujeokCreateDTO, Category cate);
 }

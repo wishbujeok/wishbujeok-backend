@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Transactional
-public class BujeokServiceTests {
+public class  BujeokServiceTests {
     @Autowired
     private BujeokService bujeokService;
     @Autowired
@@ -28,7 +28,6 @@ public class BujeokServiceTests {
     @Test
     public void Bujeok_생성_및_조회_테스트(){
         BujeokCreateDto bujeokCreateDto = BujeokCreateDto.builder()
-                .category(1L)
                 .cheerUp("힘내")
                 .content("내용입니다.")
                 .build();

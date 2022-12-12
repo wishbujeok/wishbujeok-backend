@@ -10,6 +10,10 @@ import com.example.app.bujeok.entity.dto.response.BujeokCreateResponse;
 import com.example.app.bujeok.service.BujeokService;
 import com.example.app.Category.Service.CategoryService;
 import com.example.app.error.NotFoundException;
+import com.example.app.reply.entity.dto.ReplyCreateDto;
+import com.example.app.reply.entity.dto.ReplyDto;
+import com.example.app.reply.entity.dto.mapper.ReplyCreateMapper;
+import com.example.app.reply.service.ReplyService;
 import com.example.util.Util;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +33,7 @@ public class BujeokController {
 
     private final BujeokService bujeokService;
     private final CategoryService categoryService;
+    private final ReplyService replyService;
 
     /** 부적 생성 페이지 접속시
      *  현재 사용자 명과 다른 사람 소원메시지 보내줘야함
@@ -65,7 +70,16 @@ public class BujeokController {
         long count = categoryService.getCategoryCount();
         long categoryNum = Util.getRandomNum(count);
 
-        // 후에 otherWishId를 통해 다른사람 소원에 대한 응원 메시지 저장 기능 추가
+        if(bujeokService.findById(bujeokCreateDTO.getOtherWishId()).isEmpty()){ // otherWishId에 해당하는 부적이 없을때
+            log.info("bujeok이 비었음");
+        }
+        else{
+            // 후에 otherWishId를 통해 다른사람 소원에 대한 응원 메시지 저장 기능 추가
+            ReplyCreateDto replyCreateDto = ReplyCreateMapper.INSTANCE.bujeokCreateDtoToReplyCreateDto(bujeokCreateDTO);
+            ReplyDto replyDto = replyService.create(replyCreateDto);
+            log.info("reply : "+replyDto);
+        }
+
 
         Optional<CategoryDto> found = categoryService.findById(categoryNum);// 입력 받을지 여부 후에 결정
 
