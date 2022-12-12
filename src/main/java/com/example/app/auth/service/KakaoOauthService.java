@@ -1,8 +1,11 @@
 package com.example.app.auth.service;
 
 import com.example.app.auth.dto.JwtTokenDTO;
+import com.example.app.auth.dto.KaKaoOauthInfoDto;
 import com.example.app.auth.dto.KakaoOauthTokenDTO;
+import com.example.app.auth.entity.Member;
 import com.example.app.auth.properties.OauthProperties;
+import com.example.app.auth.repository.MemberRepository;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +27,7 @@ public class KakaoOauthService implements OauthService {
 
     private final OauthProperties oauthProperties;
     private final RestTemplate restTemplate;
+    private final MemberRepository memberRepository;
     private final Gson gson;
     private OauthProperties.Kakao kakao;
     public static final String AUTHORIZATION = "authorization";
@@ -48,46 +52,41 @@ public class KakaoOauthService implements OauthService {
         // 토큰 발급하는 api 호출 후 받아오는 함수
         ResponseEntity<KakaoOauthTokenDTO> kakaoOauthTokenDTOResponseDTO = getProviderToken(authorizeCode);
 
+        System.out.println(kakaoOauthTokenDTOResponseDTO);
         // 제대로 못 받을 경우 예외 처리
         if (!kakaoOauthTokenDTOResponseDTO.getStatusCode().equals(HttpStatus.OK)) {
             throw new RuntimeException();
         }
         System.out.println(kakaoOauthTokenDTOResponseDTO);
-
+        // 토큰으로 user 정보를 호출하는 api
         ResponseEntity<String> exchange = getUserInfo(kakaoOauthTokenDTOResponseDTO.getBody());
 
         System.out.println(exchange);
         if (exchange.getStatusCode().equals(HttpStatus.OK)) {
-//            KakaoOauthInfo kakaoOauthInfo = gson.fromJson(exchange.getBody(), KakaoOauthInfo.class);
-//
-//            // 계정 추출
-//            String userEmail = kakao.getRule()
-//                    .makeFullText(kakaoOauthInfo.getKakaoId().toString());
-//
-//            // 해당 이메일이 DB상에 존재하는지 확인
-//            Member findMember = authRepository.findMemberByEmail(userEmail)
-//                    .orElse(null);
-//
-//            // 해당 이메일이 DB상에 존재한다면
-//            if (!ObjectUtils.isEmpty(findMember)) {
-//                // 토큰 발급 후 리턴
+            KaKaoOauthInfoDto kaKaoOauthInfoDto = gson.fromJson(exchange.getBody(), KaKaoOauthInfoDto.class);
+
+            // 회원번호 => DB의 회원계정
+            String memberId = kakao.getRule()
+                    .makeFullText(kaKaoOauthInfoDto.getKakaoId().toString());
+
+            // 해당 이메일이 DB상에 존재하는지 확인
+            Member findMember = memberRepository.findMemberByMemberId(memberId)
+                    .orElse(null);
+
+            // 해당 이메일이 DB상에 존재한다면
+            if (!ObjectUtils.isEmpty(findMember)) {
+                // 토큰 발급 후 리턴
 //                return jwtUtil.generateToken(findMember);
-//            }
-//
-//            // 해당 이메일이 존재하지 않다면 회원가입
-//            Member createMember = Member.builder()
-//                    .email(userEmail)
-//                    .password(passwordEncoder.encode(userEmail))
-//                    .userEmail(kakaoOauthInfo.getKakaoAccount().getEmail())
-//                    .userName(kakaoOauthInfo.getKakaoAccount().getName())
-//                    .gender(kakaoOauthInfo.getKakaoAccount().getGender())
-//                    .authRole(AuthRole.ROLE_USER)
-//                    .build();
-//
-//            authRepository.save(createMember);
-//
-//            // 토큰 발급 후 리턴
-//            return jwtUtil.generateToken(createMember);
+            }
+            else {
+                Member newMember = Member.builder()
+                        .memberId(memberId)
+                        .build();
+
+                memberRepository.save(newMember);
+            }
+
+//            return jwtUtil.generateToken(newMember);
         }
 //
 //        throw new LoginException();

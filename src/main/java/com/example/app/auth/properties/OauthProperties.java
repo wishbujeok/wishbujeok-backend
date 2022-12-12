@@ -22,18 +22,18 @@ public class OauthProperties {
         private String clientSecret;
         private String loginUri;
         private String userInfoUri;
-//        private Rule rule;
+        private Rule rule;
     }
 
-//    @Getter
-//    @Setter
-//    public static class Rule {
-//        private String prefix;
-//        private String postfix;
-//
-//        public String makeFullText(String text) {
-//            return prefix + text + "@" + postfix;
-//        }
-//
-//    }
+    @Getter
+    @Setter
+    public static class Rule {
+        private String prefix;
+        private String postfix;
+
+        public String makeFullText(String text) {
+            return prefix + text + "@" + postfix;
+        }
+
+    }
 }
