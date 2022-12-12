@@ -19,4 +19,7 @@ import static lombok.AccessLevel.PROTECTED;
 public class Member extends BaseEntity {
     @Column(nullable = false)
     private String memberId;
+
+    @Column()
+    private String email;
 }

@@ -6,6 +6,7 @@ import com.example.app.auth.dto.KakaoOauthTokenDTO;
 import com.example.app.auth.entity.Member;
 import com.example.app.auth.properties.OauthProperties;
 import com.example.app.auth.repository.MemberRepository;
+import com.example.app.jwt.util.JwtUtil;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,7 @@ public class KakaoOauthService implements OauthService {
     private final RestTemplate restTemplate;
     private final MemberRepository memberRepository;
     private final Gson gson;
+    private final JwtUtil jwtUtil;
     private OauthProperties.Kakao kakao;
     public static final String AUTHORIZATION = "authorization";
     public static final String GRANT_TYPE = "grant_type";
@@ -76,17 +78,17 @@ public class KakaoOauthService implements OauthService {
             // 해당 이메일이 DB상에 존재한다면
             if (!ObjectUtils.isEmpty(findMember)) {
                 // 토큰 발급 후 리턴
-//                return jwtUtil.generateToken(findMember);
+                return jwtUtil.generateToken(findMember);
             }
-            else {
-                Member newMember = Member.builder()
-                        .memberId(memberId)
-                        .build();
+            Member newMember = Member.builder()
+                    .memberId(memberId)
+                    .email(kaKaoOauthInfoDto.getKakaoAccount().getEmail())
+                    .build();
 
-                memberRepository.save(newMember);
-            }
+            memberRepository.save(newMember);
 
-//            return jwtUtil.generateToken(newMember);
+
+            return jwtUtil.generateToken(newMember);
         }
 //
 //        throw new LoginException();

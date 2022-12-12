@@ -18,3 +18,5 @@ oauth:
       rule:
         prefix: K
         postfix: kakao.com
+jwt:
+  key: weltkjqioghlk2132105lkewjltkewjy230

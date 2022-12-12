@@ -3,8 +3,11 @@ package com.example.app.auth.controller;
 import com.example.app.auth.dto.JwtTokenDTO;
 import com.example.app.auth.service.KakaoOauthService;
 import com.example.app.auth.service.OauthService;
+import com.example.app.base.api.ApiResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import static com.example.app.base.api.ApiResult.OK;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,10 +20,12 @@ public class AuthController {
 //    public static final String GOOGLE = "google";
 
     @GetMapping("/{provider}/login")
-    public JwtTokenDTO login(@PathVariable("provider") String provider,
-                             @RequestParam(value = "code") String authorizeCode) {
-        
-        return getProvider(provider).login(authorizeCode);
+    public ApiResult<JwtTokenDTO> login(@PathVariable("provider") String provider,
+                                        @RequestParam(value = "code") String authorizeCode) {
+
+        JwtTokenDTO jwtTokenDTO = getProvider(provider).login(authorizeCode);
+        System.out.println(jwtTokenDTO);
+        return OK(jwtTokenDTO);
     }
 
     public OauthService getProvider(String provider) {

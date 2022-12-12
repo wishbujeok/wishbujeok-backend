@@ -13,4 +13,12 @@ public class KaKaoOauthInfoDto {
     @SerializedName("id")
     private Long kakaoId;
 
+    @SerializedName("kakao_account")
+    private KakaoAccount kakaoAccount;
+    @Getter
+    @Setter
+    @ToString
+    public static class KakaoAccount{
+        private String email;
+    }
 }
