@@ -54,19 +54,16 @@ public class KakaoOauthService implements OauthService {
         // 토큰 발급하는 api 호출 후 받아오는 함수
         ResponseEntity<KakaoOauthTokenDTO> kakaoOauthTokenDTOResponseDTO = getProviderToken(authorizeCode);
 
-        System.out.println(kakaoOauthTokenDTOResponseDTO);
         // 제대로 못 받을 경우 예외 처리
         if (!kakaoOauthTokenDTOResponseDTO.getStatusCode().equals(HttpStatus.OK)) {
             throw new RuntimeException();
         }
-        System.out.println(kakaoOauthTokenDTOResponseDTO);
         // 토큰으로 user 정보를 호출하는 api
         ResponseEntity<String> exchange = getUserInfo(kakaoOauthTokenDTOResponseDTO.getBody());
 
         System.out.println(exchange);
         if (exchange.getStatusCode().equals(HttpStatus.OK)) {
             KaKaoOauthInfoDto kaKaoOauthInfoDto = gson.fromJson(exchange.getBody(), KaKaoOauthInfoDto.class);
-
             // 회원번호 => DB의 회원계정
             String memberId = kakao.getRule()
                     .makeFullText(kaKaoOauthInfoDto.getKakaoId().toString());
@@ -82,6 +79,7 @@ public class KakaoOauthService implements OauthService {
             }
             Member newMember = Member.builder()
                     .memberId(memberId)
+                    .nickname(kaKaoOauthInfoDto.getKakaoAccount().getProfile().getNickname())
                     .email(kaKaoOauthInfoDto.getKakaoAccount().getEmail())
                     .build();
 

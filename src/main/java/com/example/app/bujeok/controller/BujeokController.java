@@ -48,7 +48,7 @@ public class BujeokController {
 
         BujeokDto bujeokDto = found.get();
 
-        String username = "user1"; // 후에 변경
+        String username = "user1"; // TODO : 후에 변경
 
         BujeokCreateResponse bujeokCreateResponse = BujeokCreateResponse.builder()
                 .otherWish(bujeokDto.getContent())
