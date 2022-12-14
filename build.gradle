@@ -46,6 +46,9 @@ dependencies {
 	// Map Struct 라이브러리
 	implementation 'org.mapstruct:mapstruct:1.4.2.Final'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
+
+	//swagger 적용
+	implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.6.13'
 }
 
 tasks.named('test') {
