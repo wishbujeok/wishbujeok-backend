@@ -5,8 +5,7 @@ spring:
     driver-class-name: org.mariadb.jdbc.Driver
 logging:
   level:
-    root: info
-    site.codecare: debug
+    com.example.app: debug
     org.hibernate.type.descriptor.sql: trace
 jasypt:
   encryptor:
