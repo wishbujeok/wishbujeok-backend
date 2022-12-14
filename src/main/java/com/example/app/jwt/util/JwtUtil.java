@@ -58,6 +58,11 @@ public class JwtUtil {
                 .compact();
     }
 
+    public String getMemberId(String accessToken){
+        Claims claims = parseClaims(accessToken);
+        return claims.get("memberId", String.class);
+    }
+
     // JWT 토큰을 복호화하여 토큰에 들어있는 정보를 꺼내는 메서드
     public Authentication getAuthentication(String accessToken) {
         // 토큰 복호화

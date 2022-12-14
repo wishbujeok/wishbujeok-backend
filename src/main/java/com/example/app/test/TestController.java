@@ -1,9 +1,11 @@
 package com.example.app.test;
 
+import com.example.app.auth.entity.MemberContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,13 +20,13 @@ public class TestController {
     private final TestRepository testRepository;
 
     @GetMapping("/add")
-    public ResponseEntity<String> testForCICD(){
+    public ResponseEntity<String> testForCICD( @AuthenticationPrincipal MemberContext memberContext){
         Test t = new Test();
         t.setName("qwe");
         testRepository.save(t);
         log.info("test");
-        String qwe = String.valueOf(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-        log.info(qwe);
+        log.info(memberContext.getNickname());
+
         return new ResponseEntity<>("success", HttpStatus.OK);
     }
     @GetMapping("/kakaoLogin")

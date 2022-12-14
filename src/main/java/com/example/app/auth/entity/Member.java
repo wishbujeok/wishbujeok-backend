@@ -33,6 +33,7 @@ public class Member extends BaseEntity {
 
     public Map<String, Object> getAccessTokenClaims() {
         return Util.mapOf(
+                "memberId", getMemberId(),
                 "email", getEmail(),
                 "nickname", getNickname(),
                 "authRole", getAuthRole().name()
