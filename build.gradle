@@ -49,6 +49,16 @@ dependencies {
 
 	//swagger 적용
 	implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.6.13'
+
+	// https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-ui
+	implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.6.13'
+
+	// security
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+
 }
 
 tasks.named('test') {

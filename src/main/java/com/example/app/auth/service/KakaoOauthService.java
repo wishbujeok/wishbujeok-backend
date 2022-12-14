@@ -3,6 +3,7 @@ package com.example.app.auth.service;
 import com.example.app.auth.dto.JwtTokenDTO;
 import com.example.app.auth.dto.KaKaoOauthInfoDto;
 import com.example.app.auth.dto.KakaoOauthTokenDTO;
+import com.example.app.auth.entity.AuthRole;
 import com.example.app.auth.entity.Member;
 import com.example.app.auth.properties.OauthProperties;
 import com.example.app.auth.repository.MemberRepository;
@@ -54,16 +55,13 @@ public class KakaoOauthService implements OauthService {
         // 토큰 발급하는 api 호출 후 받아오는 함수
         ResponseEntity<KakaoOauthTokenDTO> kakaoOauthTokenDTOResponseDTO = getProviderToken(authorizeCode);
 
-        System.out.println(kakaoOauthTokenDTOResponseDTO);
         // 제대로 못 받을 경우 예외 처리
         if (!kakaoOauthTokenDTOResponseDTO.getStatusCode().equals(HttpStatus.OK)) {
             throw new RuntimeException();
         }
-        System.out.println(kakaoOauthTokenDTOResponseDTO);
         // 토큰으로 user 정보를 호출하는 api
         ResponseEntity<String> exchange = getUserInfo(kakaoOauthTokenDTOResponseDTO.getBody());
 
-        System.out.println(exchange);
         if (exchange.getStatusCode().equals(HttpStatus.OK)) {
             KaKaoOauthInfoDto kaKaoOauthInfoDto = gson.fromJson(exchange.getBody(), KaKaoOauthInfoDto.class);
 
@@ -75,20 +73,29 @@ public class KakaoOauthService implements OauthService {
             Member findMember = memberRepository.findMemberByMemberId(memberId)
                     .orElse(null);
 
+
+
             // 해당 이메일이 DB상에 존재한다면
             if (!ObjectUtils.isEmpty(findMember)) {
                 // 토큰 발급 후 리턴
-                return jwtUtil.generateToken(findMember);
+                JwtTokenDTO jwtTokenDTO = jwtUtil.generateToken(findMember);
+                findMember.setRefreshToken(jwtTokenDTO.getRefreshToken());
+                memberRepository.save(findMember);
+                return jwtTokenDTO;
             }
+
             Member newMember = Member.builder()
                     .memberId(memberId)
+                    .nickname(kaKaoOauthInfoDto.getKakaoAccount().getProfile().getNickname())
                     .email(kaKaoOauthInfoDto.getKakaoAccount().getEmail())
+                    .authRole(AuthRole.ROLE_USER)
                     .build();
-
+            JwtTokenDTO jwtTokenDTO = jwtUtil.generateToken(newMember);
+            newMember.setRefreshToken(jwtTokenDTO.getRefreshToken());
             memberRepository.save(newMember);
 
 
-            return jwtUtil.generateToken(newMember);
+            return jwtTokenDTO;
         }
 //
 //        throw new LoginException();

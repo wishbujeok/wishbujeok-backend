@@ -20,5 +20,12 @@ public class KaKaoOauthInfoDto {
     @ToString
     public static class KakaoAccount{
         private String email;
+        private Profile profile;
+    }
+    @Getter
+    @Setter
+    @ToString
+    public static class Profile{
+        private String nickname;
     }
 }
