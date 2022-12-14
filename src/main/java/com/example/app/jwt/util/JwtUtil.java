@@ -2,44 +2,100 @@ package com.example.app.jwt.util;
 
 import com.example.app.auth.dto.JwtTokenDTO;
 import com.example.app.auth.entity.Member;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
+import java.util.stream.Collectors;
 
 @Component
 @Slf4j
 public class JwtUtil {
 
     private static final String TOKEN_TYPE = "Bearer";
-
+    // 1시간 단위
+    public static final long JWT_TOKEN_VALIDITY = 1000 * 60 * 60;
     @Value("${jwt.key}")
     private String jwtKey;
 
     public JwtTokenDTO generateToken(Member member){
-        Claims claims = Jwts.claims();
-        claims.put("email", member.getEmail());
-        Key key = Keys.hmacShaKeyFor(jwtKey.getBytes(StandardCharsets.UTF_8));
         return JwtTokenDTO.builder()
                 .tokenType(TOKEN_TYPE)
-                .accessToken(Jwts.builder()
-                        .setClaims(claims)
-                        .setSubject("access_token")
-                        .setIssuedAt(new Date(System.currentTimeMillis()))
-                        .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 1시간
-                        .signWith(key, SignatureAlgorithm.HS256)
-                        .compact())
-                .refreshToken(null)
+                .accessToken(generateAccessToken(member))
+                .refreshToken(generateRefreshToken())
                 .build();
     }
+    public String generateAccessToken(Member member){
+        Key key = Keys.hmacShaKeyFor(jwtKey.getBytes(StandardCharsets.UTF_8));
+        return Jwts.builder()
+                .setSubject(member.getMemberId())
+                .setClaims(member.getAccessTokenClaims())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY)) // 1시간
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
+    }
+    public String generateRefreshToken(){
+        Key key = Keys.hmacShaKeyFor(jwtKey.getBytes(StandardCharsets.UTF_8));
+        return Jwts.builder()
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 24 * 365)) // 1년
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
+    }
 
+    // JWT 토큰을 복호화하여 토큰에 들어있는 정보를 꺼내는 메서드
+    public Authentication getAuthentication(String accessToken) {
+        // 토큰 복호화
+        Claims claims = parseClaims(accessToken);
+
+        if (claims.get("authRole") == null) {
+            throw new RuntimeException("권한 정보가 없는 토큰입니다.");
+        }
+        String authRole = claims.get("authRole", String.class);
+        String memberId = claims.getSubject();
+        return new UsernamePasswordAuthenticationToken(memberId, "", Collections.singleton(new SimpleGrantedAuthority(authRole)));
+    }
+    private Claims parseClaims(String accessToken) {
+        Key key = Keys.hmacShaKeyFor(jwtKey.getBytes(StandardCharsets.UTF_8));
+        try {
+            return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).getBody();
+        } catch (ExpiredJwtException e) {
+            return e.getClaims();
+        }
+    }
+
+    // 토큰 정보를 검증하는 메서드
+    public boolean validateToken(String token) {
+        Key key = Keys.hmacShaKeyFor(jwtKey.getBytes(StandardCharsets.UTF_8));
+        try {
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+            return true;
+        } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
+            log.info("Invalid JWT Token", e);
+        } catch (ExpiredJwtException e) {
+            log.info("Expired JWT Token", e);
+        } catch (UnsupportedJwtException e) {
+            log.info("Unsupported JWT Token", e);
+        } catch (IllegalArgumentException e) {
+            log.info("JWT claims string is empty.", e);
+        }
+        return false;
+    }
 //    /**
 //     * 토큰 유효여부 확인
 //     */
