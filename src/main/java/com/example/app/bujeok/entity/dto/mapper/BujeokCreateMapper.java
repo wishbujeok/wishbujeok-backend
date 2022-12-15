@@ -14,7 +14,6 @@ public interface BujeokCreateMapper {
     @Mapping(target= "createDate", ignore = true)
     @Mapping(target= "id", ignore = true)
     @Mapping(target = "modifyDate", ignore = true)
-    @Mapping(target= "userId", ignore = true)
     @Mapping(target = "backUrl", ignore = true)
     @Mapping(target = "reply", ignore = true)
     @Mapping(source="cate", target="category")

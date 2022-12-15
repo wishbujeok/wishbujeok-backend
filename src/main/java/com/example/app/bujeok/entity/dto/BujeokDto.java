@@ -16,12 +16,11 @@ import javax.persistence.ManyToOne;
 @NoArgsConstructor
 @SuperBuilder
 @ToString(callSuper = true)
-public class BujeokDto extends BaseEntity {
+public class BujeokDto {
+    private Long id;
     private Long userId;
-    private Reply reply;
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
+    private String reply;
+    private String category;
     private String content;
     private String backUrl;
 }
