@@ -20,7 +20,7 @@ import javax.persistence.ManyToOne;
 @ToString(callSuper = true)
 public class BujeokDto {
     private Long id;
-    private Long userId;
+    private String memberName;
     private String reply;
     private String category;
     private String content;
