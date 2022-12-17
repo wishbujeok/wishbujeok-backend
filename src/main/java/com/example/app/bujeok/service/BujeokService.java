@@ -11,10 +11,13 @@ import com.example.app.bujeok.entity.dto.mapper.BujeokCreateMapper;
 import com.example.app.bujeok.entity.dto.mapper.BujeokDtoMapper;
 import com.example.app.bujeok.repository.BujeokRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class BujeokService {
@@ -60,4 +63,17 @@ public class BujeokService {
         return BujeokDtoMapper.INSTANCE.BujeokToBujeokDtoWithoutReply(bujeok);
     }
 
+    public Optional<BujeokDto> findByMemberId(String memberId) {
+//        Optional<Bujeok> byMemberId = bujeokRepository.findByMember_MemberId(memberId);
+
+        List<Bujeok> byMember_memberId = bujeokRepository.findByMember_MemberId(memberId);
+
+        log.info("memberId로 검색 : "+byMember_memberId);
+
+//        if(byMemberId.isEmpty()){
+//            return Optional.ofNullable(null);
+//        }
+
+        return Optional.ofNullable(BujeokDtoMapper.INSTANCE.BujeokToBujeokDto(byMember_memberId.get(0)));
+    }
 }

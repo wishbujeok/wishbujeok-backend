@@ -47,6 +47,7 @@ public class BujeokController {
     public ApiResult<BujeokCreateResponse> getCreatePage(@AuthenticationPrincipal MemberContext memberContext){
         Optional<BujeokDto> found = bujeokService.getOtherBujeok();
 
+
         if(found.isEmpty()){ // 디비에 저장된 부적이 하나도 없을 경우
             ERROR(new NotFoundException(Bujeok.class), HttpStatus.NO_CONTENT);
         }
@@ -74,6 +75,8 @@ public class BujeokController {
     @PostMapping()
     public ApiResult<BujeokDto> createBujeok(@RequestBody BujeokCreateDto bujeokCreateDTO, @AuthenticationPrincipal MemberContext memberContext){
         log.info("otherWishId : "+bujeokCreateDTO.getOtherWishId());
+
+        // Todo 한번만 생성할 수 있도록 수정해야함 -> 테스트 때문에 지금은 가능
 
         long count = categoryService.getCategoryCount();
         long categoryNum = Util.getRandomNum(count);
