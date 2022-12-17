@@ -1,5 +1,6 @@
 package com.example.app.reply.entity;
 
+import com.example.app.auth.entity.Member;
 import com.example.app.base.entity.BaseEntity;
 import com.example.app.bujeok.entity.Bujeok;
 import lombok.Getter;
@@ -8,6 +9,7 @@ import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -16,10 +18,12 @@ import javax.persistence.OneToOne;
 @SuperBuilder
 @ToString(callSuper = true)
 public class Reply extends BaseEntity {
-
     @OneToOne(mappedBy = "reply")
     private Bujeok bujeok;
-    // 후에 user 추가
-    // private User user
+
+    @OneToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
+
     private String content;
 }
