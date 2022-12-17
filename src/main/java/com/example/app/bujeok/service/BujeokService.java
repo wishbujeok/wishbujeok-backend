@@ -27,7 +27,9 @@ public class BujeokService {
         if(byId.isEmpty()){
             return Optional.ofNullable(null);
         }
-
+        if(byId.get().getReply()==null){
+            return Optional.ofNullable(BujeokDtoMapper.INSTANCE.BujeokToBujeokDtoWithoutReply(byId.get()));
+        }
         return Optional.ofNullable(BujeokDtoMapper.INSTANCE.BujeokToBujeokDto(byId.get()));
     }
 
@@ -39,6 +41,9 @@ public class BujeokService {
             return Optional.ofNullable(null);
         }
 
+        if(byId.get().getReply()==null){
+            return Optional.ofNullable(BujeokDtoMapper.INSTANCE.BujeokToBujeokDtoWithoutReply(byId.get()));
+        }
         return Optional.ofNullable(BujeokDtoMapper.INSTANCE.BujeokToBujeokDto(byId.get()));
     }
 
@@ -51,7 +56,7 @@ public class BujeokService {
 
         bujeokRepository.save(bujeok);
 
-        return BujeokDtoMapper.INSTANCE.BujeokToBujeokDto(bujeok);
+        return BujeokDtoMapper.INSTANCE.BujeokToBujeokDtoWithoutReply(bujeok);
     }
 
 }

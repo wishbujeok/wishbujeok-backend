@@ -5,6 +5,7 @@ import com.example.app.base.entity.BaseEntity;
 import com.example.app.reply.entity.Reply;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
@@ -15,6 +16,7 @@ import javax.persistence.ManyToOne;
 @Getter
 @NoArgsConstructor
 @SuperBuilder
+@Setter
 @ToString(callSuper = true)
 public class BujeokDto {
     private Long id;

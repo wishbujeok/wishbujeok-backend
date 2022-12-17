@@ -15,4 +15,8 @@ public interface BujeokDtoMapper {
     @Mapping(target = "reply", expression = "java(bujeok.getReply().getContent())")
     @Mapping(target = "category", expression = "java(bujeok.getCategory().getFrontUrl())")
     BujeokDto BujeokToBujeokDto(Bujeok bujeok);
+
+    @Mapping(target = "reply", ignore = true)
+    @Mapping(target = "category", expression = "java(bujeok.getCategory().getFrontUrl())")
+    BujeokDto BujeokToBujeokDtoWithoutReply(Bujeok bujeok);
 }

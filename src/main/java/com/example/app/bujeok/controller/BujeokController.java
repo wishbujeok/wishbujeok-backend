@@ -1,6 +1,7 @@
 package com.example.app.bujeok.controller;
 
 import com.example.app.Category.entity.dto.CategoryDto;
+import com.example.app.auth.entity.MemberContext;
 import com.example.app.base.api.ApiResult;
 import com.example.app.bujeok.entity.Bujeok;
 import com.example.app.Category.entity.Category;
@@ -18,6 +19,7 @@ import com.example.util.Util;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -39,7 +41,7 @@ public class BujeokController {
      *  현재 사용자 명과 다른 사람 소원메시지 보내줘야함
      * */
     @GetMapping()
-    public ApiResult<BujeokCreateResponse> getCreatePage(){
+    public ApiResult<BujeokCreateResponse> getCreatePage(@AuthenticationPrincipal MemberContext memberContext){
         Optional<BujeokDto> found = bujeokService.getOtherBujeok();
 
         if(found.isEmpty()){ // 디비에 저장된 부적이 하나도 없을 경우
@@ -49,6 +51,9 @@ public class BujeokController {
         BujeokDto bujeokDto = found.get();
 
         String username = "user1"; // TODO : 후에 변경
+        // Long userId = memberContext.getId();
+        //
+        log.info("이름: "+memberContext.getNickname());
 
         BujeokCreateResponse bujeokCreateResponse = BujeokCreateResponse.builder()
                 .otherWish(bujeokDto.getContent())
@@ -64,11 +69,13 @@ public class BujeokController {
      * 부적 content와 다른 사람의 소원 메시지의 응원메시지 받아야 함
      */
     @PostMapping()
-    public ApiResult<BujeokDto> createBujeok(@RequestBody BujeokCreateDto bujeokCreateDTO){
+    public ApiResult<BujeokDto> createBujeok(@RequestBody BujeokCreateDto bujeokCreateDTO, @AuthenticationPrincipal MemberContext memberContext){
         log.info("otherWishId : "+bujeokCreateDTO.getOtherWishId());
 
         long count = categoryService.getCategoryCount();
         long categoryNum = Util.getRandomNum(count);
+
+        log.info("이름: "+memberContext.getNickname());
 
         if(bujeokService.findById(bujeokCreateDTO.getOtherWishId()).isEmpty()){ // otherWishId에 해당하는 부적이 없을때
             log.info("bujeok이 비었음");

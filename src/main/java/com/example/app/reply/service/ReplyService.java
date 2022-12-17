@@ -42,4 +42,8 @@ public class ReplyService {
 
         return ReplyDtoMapper.INSTANCE.replyToReplyDto(reply);
     }
+
+    public void delete(long l) {
+
+    }
 }

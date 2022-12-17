@@ -28,7 +28,7 @@ public class JwtUtil {
 
     private static final String TOKEN_TYPE = "Bearer";
     // 1시간 단위
-    public static final long JWT_TOKEN_VALIDITY = 1000 * 60 * 60;
+    public static final long JWT_TOKEN_VALIDITY = 1000 * 60 * 60* 60;
     @Value("${jwt.key}")
     private String jwtKey;
 
