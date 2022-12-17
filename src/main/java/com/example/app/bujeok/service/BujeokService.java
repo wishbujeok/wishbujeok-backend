@@ -3,6 +3,7 @@ package com.example.app.bujeok.service;
 import com.example.app.Category.entity.Category;
 import com.example.app.Category.entity.dto.CategoryDto;
 import com.example.app.Category.entity.mapper.CategoryDtoMapper;
+import com.example.app.auth.entity.Member;
 import com.example.app.bujeok.entity.Bujeok;
 import com.example.app.bujeok.entity.dto.BujeokCreateDto;
 import com.example.app.bujeok.entity.dto.BujeokDto;
@@ -49,10 +50,10 @@ public class BujeokService {
 
 
 
-    public BujeokDto create(CategoryDto categoryDto, BujeokCreateDto bujeokCreateDTO){
+    public BujeokDto create(CategoryDto categoryDto, BujeokCreateDto bujeokCreateDTO, Member member){
         Category category = CategoryDtoMapper.INSTANCE.CategoryDtoToCategory(categoryDto);
 
-        Bujeok bujeok = BujeokCreateMapper.INSTANCE.bujeokCraeteDTOToEntity(bujeokCreateDTO, category);
+        Bujeok bujeok = BujeokCreateMapper.INSTANCE.bujeokCraeteDTOToEntity(bujeokCreateDTO, category,member);
 
         bujeokRepository.save(bujeok);
 

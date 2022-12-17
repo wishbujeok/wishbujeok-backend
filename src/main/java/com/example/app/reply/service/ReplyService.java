@@ -1,5 +1,6 @@
 package com.example.app.reply.service;
 
+import com.example.app.auth.entity.Member;
 import com.example.app.bujeok.entity.Bujeok;
 import com.example.app.bujeok.repository.BujeokRepository;
 import com.example.app.reply.entity.Reply;
@@ -21,7 +22,7 @@ public class ReplyService {
     private final ReplyRepository replyRepository;
     private final BujeokRepository bujeokRepository;
 
-    public ReplyDto create(ReplyCreateDto replyCreateDto){
+    public ReplyDto create(ReplyCreateDto replyCreateDto, Member member){
         Optional<Bujeok> found = bujeokRepository.findById(replyCreateDto.getOtherWishId());
 
         if(found.isEmpty()){
