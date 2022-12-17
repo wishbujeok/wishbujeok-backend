@@ -1,7 +1,9 @@
 package com.example.app.bujeok.controller;
 
 import com.example.app.Category.entity.dto.CategoryDto;
+import com.example.app.auth.entity.Member;
 import com.example.app.auth.entity.MemberContext;
+import com.example.app.auth.service.MemberService;
 import com.example.app.base.api.ApiResult;
 import com.example.app.bujeok.entity.Bujeok;
 import com.example.app.Category.entity.Category;
@@ -36,6 +38,7 @@ public class BujeokController {
     private final BujeokService bujeokService;
     private final CategoryService categoryService;
     private final ReplyService replyService;
+    private final MemberService memberService;
 
     /** 부적 생성 페이지 접속시
      *  현재 사용자 명과 다른 사람 소원메시지 보내줘야함
@@ -50,9 +53,9 @@ public class BujeokController {
 
         BujeokDto bujeokDto = found.get();
 
-        String username = "user1"; // TODO : 후에 변경
-        // Long userId = memberContext.getId();
-        //
+        String username = memberContext.getNickname(); // TODO : 후에 변경
+
+
         log.info("이름: "+memberContext.getNickname());
 
         BujeokCreateResponse bujeokCreateResponse = BujeokCreateResponse.builder()
