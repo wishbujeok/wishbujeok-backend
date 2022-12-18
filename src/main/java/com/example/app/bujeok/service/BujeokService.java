@@ -56,7 +56,9 @@ public class BujeokService {
 
         Bujeok bujeok = BujeokCreateMapper.INSTANCE.bujeokCraeteDTOToEntity(bujeokCreateDTO, category,member);
 
+        log.info("부적 생성시 : "+bujeok.getMember().getNickname());
         bujeokRepository.save(bujeok);
+
 
         return BujeokDtoMapper.INSTANCE.BujeokToBujeokDtoWithoutReply(bujeok);
     }

@@ -19,5 +19,6 @@ public interface BujeokDtoMapper {
 
     @Mapping(target = "reply", ignore = true)
     @Mapping(target = "category", expression = "java(bujeok.getCategory().getFrontUrl())")
+    @Mapping(target = "memberName",expression = "java(bujeok.getMember().getNickname())")
     BujeokDto BujeokToBujeokDtoWithoutReply(Bujeok bujeok);
 }
