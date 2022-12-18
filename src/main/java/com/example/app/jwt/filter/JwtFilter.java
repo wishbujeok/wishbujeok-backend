@@ -36,16 +36,19 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = extractToken(request.getHeader(AUTHORIZATION));
-        log.info("doFilter" + token + "ewlkt");
         log.info(token);
         if (StringUtils.hasText(token) && jwtUtil.validateToken(token)) {
+            if(jwtUtil.getType(token).equals("RTK") && request.getRequestURI().equals("/auth/token")){
 
-            String memberId = jwtUtil.getMemberId(token);
-            log.info(memberId);
-            Member member = memberService.findByMemberId(memberId).orElseThrow(
-                    () -> new UsernameNotFoundException("'%s' Username not found.".formatted(memberId))
-            );
-            forceAuthentication(member);
+            } else if(jwtUtil.getType(token).equals("ATK")){
+                String memberId = jwtUtil.getMemberId(token);
+                log.info(memberId);
+                Member member = memberService.findByMemberId(memberId).orElseThrow(
+                        () -> new UsernameNotFoundException("'%s' Username not found.".formatted(memberId))
+                );
+                forceAuthentication(member);
+            }
+
         }
         filterChain.doFilter(request, response);
     }

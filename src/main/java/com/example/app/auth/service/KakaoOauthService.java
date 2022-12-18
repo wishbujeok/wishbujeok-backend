@@ -12,6 +12,7 @@ import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
@@ -134,5 +135,14 @@ public class KakaoOauthService implements OauthService {
 
         ResponseEntity<String> exchange = restTemplate.exchange(kakao.getUserInfoUri(), HttpMethod.GET, new HttpEntity<>(httpHeaders), String.class);
         return exchange;
+    }
+
+    public JwtTokenDTO issueAccessToken(String refreshToken) {
+        Member member = memberRepository.findMemberByRefreshToken(refreshToken.substring(7)).orElseThrow(
+                () -> new UsernameNotFoundException("User Not Found"));
+        return JwtTokenDTO.builder()
+                .accessToken(jwtUtil.generateAccessToken(member))
+                .refreshToken(null)
+                .build();
     }
 }

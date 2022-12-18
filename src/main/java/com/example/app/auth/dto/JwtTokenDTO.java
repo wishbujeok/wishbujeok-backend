@@ -8,13 +8,11 @@ import lombok.Setter;
 @Setter
 public class JwtTokenDTO {
 
-    private String tokenType;
     private String accessToken;
     private String refreshToken;
 
     @Builder
-    public JwtTokenDTO(String tokenType, String accessToken, String refreshToken) {
-        this.tokenType = tokenType;
+    public JwtTokenDTO(String accessToken, String refreshToken) {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
     }
