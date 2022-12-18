@@ -15,4 +15,7 @@ public class MemberService {
     public Optional<Member> findByMemberId(String memberId){
         return memberRepository.findMemberByMemberId(memberId);
     }
+    public Optional<Member> findByRefreshToken(String refreshToken){
+        return memberRepository.findMemberByRefreshToken(refreshToken);
+    }
 }

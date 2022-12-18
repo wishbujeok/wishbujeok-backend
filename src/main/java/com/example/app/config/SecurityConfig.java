@@ -23,7 +23,7 @@ public class SecurityConfig {
                 .authorizeRequests(
                         authorizeRequests -> authorizeRequests
                                 .antMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-                                .antMatchers( "/**/login").permitAll()
+                                .antMatchers( "/**/login", "/auth/token").permitAll()
                                 .anyRequest()
                                 .authenticated() // 최소자격 : 로그인
                 )
@@ -31,9 +31,6 @@ public class SecurityConfig {
                 .csrf().disable() // CSRF 토큰 끄기
                 .httpBasic().disable() // httpBaic 로그인 방식 끄기
                 .formLogin().disable() // 폼 로그인 방식 끄기
-//                .sessionManagement(sessionManagement ->
-//                        sessionManagement.sessionCreationPolicy(STATELESS)
-//                )
                 .addFilterBefore(
                         jwtFilter,
                         UsernamePasswordAuthenticationFilter.class

@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
 @Slf4j
 public class JwtUtil {
 
-    private static final String TOKEN_TYPE = "Bearer";
     // 1시간 단위
     public static final long JWT_TOKEN_VALIDITY = 1000 * 60 * 60;
     @Value("${jwt.key}")
@@ -32,7 +31,6 @@ public class JwtUtil {
 
     public JwtTokenDTO generateToken(Member member){
         return JwtTokenDTO.builder()
-                .tokenType(TOKEN_TYPE)
                 .accessToken(generateAccessToken(member))
                 .refreshToken(generateRefreshToken())
                 .build();
@@ -62,12 +60,16 @@ public class JwtUtil {
         return claims.get("memberId", String.class);
     }
 
+    public String getType(String accessToken){
+        Claims claims = parseClaims(accessToken);
+        return claims.get("type", String.class);
+    }
     // JWT 토큰을 복호화하여 토큰에 들어있는 정보를 꺼내는 메서드
     public Authentication getAuthentication(String accessToken) {
         // 토큰 복호화
         Claims claims = parseClaims(accessToken);
 
-        if (claims.get("authRole") == null) {
+        if (claims.get("type") == null) {
             throw new RuntimeException("권한 정보가 없는 토큰입니다.");
         }
         String authRole = claims.get("authRole", String.class);
