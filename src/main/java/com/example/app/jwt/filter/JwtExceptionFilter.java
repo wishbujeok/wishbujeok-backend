@@ -1,7 +1,9 @@
 package com.example.app.jwt.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -31,16 +33,19 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try{
             filterChain.doFilter(request,response);
-        } catch (JwtException ex){
-            log.error("exception exception handler filter");
-            Map<String, Object> errorDetails = new HashMap<>();
-            errorDetails.put("message", "Invalid token");
-
-            response.setStatus(HttpStatus.FORBIDDEN.value());
-            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-
-            mapper.writeValue(response.getWriter(), errorDetails);
+        } catch (ExpiredJwtException ex){
+            setResponse(response, "expired", "send refresh Token");
+        } catch (UnsupportedJwtException e){
+            setResponse(response, "unsupported", "Unsupported JWT Token");
         }
     }
-
+    private void setResponse(HttpServletResponse response, String error, String message) throws IOException {
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        Map<String, Object> errorDetails = new HashMap<>();
+        errorDetails.put("JWT_ERROR", error);
+        errorDetails.put("message", message);
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        mapper.writeValue(response.getWriter(), errorDetails);
+    }
 }

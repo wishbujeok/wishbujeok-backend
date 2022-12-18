@@ -2,6 +2,7 @@ package com.example.app.jwt.util;
 
 import com.example.app.auth.dto.JwtTokenDTO;
 import com.example.app.auth.entity.Member;
+import com.example.util.Util;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
@@ -16,10 +17,7 @@ import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -43,7 +41,7 @@ public class JwtUtil {
         Key key = Keys.hmacShaKeyFor(jwtKey.getBytes(StandardCharsets.UTF_8));
         return Jwts.builder()
                 .setSubject(member.getMemberId())
-                .setClaims(member.getAccessTokenClaims())
+                .setClaims(Util.mapOf(member.getAccessTokenClaims(), "type", "ATK"))
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY)) // 1시간
                 .signWith(key, SignatureAlgorithm.HS256)
@@ -53,6 +51,7 @@ public class JwtUtil {
         Key key = Keys.hmacShaKeyFor(jwtKey.getBytes(StandardCharsets.UTF_8));
         return Jwts.builder()
                 .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setClaims(Util.mapOf("type", "RTK"))
                 .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 24 * 365)) // 1년
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
@@ -94,9 +93,10 @@ public class JwtUtil {
             log.info("Invalid JWT Token", e);
         } catch (ExpiredJwtException e) {
             log.info("Expired JWT Token", e);
-            throw new JwtException("Expired JWT Token");
+            throw new ExpiredJwtException(null, null, "Expired JWT Token");
         } catch (UnsupportedJwtException e) {
             log.info("Unsupported JWT Token", e);
+            throw new ExpiredJwtException(null, null, "Unsupported JWT Token");
         } catch (IllegalArgumentException e) {
             log.info("JWT claims string is empty.", e);
         }
