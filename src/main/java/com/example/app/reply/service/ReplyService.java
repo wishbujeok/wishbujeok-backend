@@ -53,12 +53,14 @@ public class ReplyService {
         //Todo 추후에 수정
         List<Bujeok> found = bujeokRepository.findByMember_MemberId(memberId);
         Bujeok bujeok = found.get(0);
-        bujeok.setReplied(false);
-        bujeok.setReply(null);
+        Reply reply = bujeok.getReply();
 
         log.info("Bujeok : "+found.get(0));
         log.info("found안에 reply : "+found.get(0).getReply());
 
-        replyRepository.delete(found.get(0).getReply());
+        bujeok.setReplied(false);
+        bujeok.setReply(null);
+
+        replyRepository.delete(reply);
     }
 }
