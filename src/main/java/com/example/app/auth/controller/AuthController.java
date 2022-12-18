@@ -1,13 +1,17 @@
 package com.example.app.auth.controller;
 
 import com.example.app.auth.dto.JwtTokenDTO;
+import com.example.app.auth.entity.MemberContext;
 import com.example.app.auth.service.KakaoOauthService;
+import com.example.app.auth.service.MemberService;
 import com.example.app.auth.service.OauthService;
 import com.example.app.base.api.ApiResult;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +25,7 @@ import static com.example.app.base.api.ApiResult.OK;
 public class AuthController {
     private final KakaoOauthService kakaoOauthService;
 
+    private final MemberService memberService;
     public static final String KAKAO = "kakao";
     // TODO : google 도 구현해보기
 //    public static final String GOOGLE = "google";
@@ -33,6 +38,12 @@ public class AuthController {
         System.out.println("access : " + jwtTokenDTO.getAccessToken());
         System.out.println("refresh : " + jwtTokenDTO.getRefreshToken());
         return OK(jwtTokenDTO);
+    }
+    @GetMapping("/token")
+    public ApiResult<JwtTokenDTO> issueAccessToken(@RequestHeader HttpHeaders header){
+        String refreshToken = header.getFirst("Authorization");
+
+        return OK(kakaoOauthService.issueAccessToken(refreshToken));
     }
 
     public OauthService getProvider(String provider) {
