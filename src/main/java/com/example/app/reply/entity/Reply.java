@@ -10,6 +10,7 @@ import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -22,7 +23,7 @@ import javax.persistence.OneToOne;
 @SQLDelete(sql = "UPDATE reply SET deleted = true WHERE id = ?")
 @Where(clause = "deleted = false")
 public class Reply extends BaseEntity {
-    @OneToOne(mappedBy = "reply")
+    @OneToOne(mappedBy = "reply") //,cascade = CascadeType.REFRESH)
     private Bujeok bujeok;
 
     @OneToOne

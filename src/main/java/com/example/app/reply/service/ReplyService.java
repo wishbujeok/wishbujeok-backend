@@ -54,6 +54,7 @@ public class ReplyService {
         List<Bujeok> found = bujeokRepository.findByMember_MemberId(memberId);
         Bujeok bujeok = found.get(0);
         bujeok.setReplied(false);
+        bujeok.setReply(null);
 
         log.info("Bujeok : "+found.get(0));
         log.info("found안에 reply : "+found.get(0).getReply());

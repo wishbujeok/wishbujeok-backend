@@ -1,11 +1,11 @@
 spring:
   datasource:
     url: jdbc:mariadb://127.0.0.1:3306/wishbujeok_local?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true&useSSL=false
-    username: root
-    password: race1020
+    username: wishbujeok
+    password: wishbujeok1234
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
 oauth:
   provider:
     kakao:

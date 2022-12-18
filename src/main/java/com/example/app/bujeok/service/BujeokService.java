@@ -27,9 +27,8 @@ public class BujeokService {
 
         Bujeok notReplied = bujeokRepository.findFirstByReplied(false).orElseThrow();
 
-
-
-        if(notReplied.getReply()==null){
+        log.info("확인 : "+notReplied.isReplied());
+        if(notReplied.isReplied()==false){
             return Optional.ofNullable(BujeokDtoMapper.INSTANCE.BujeokToBujeokDtoWithoutReply(notReplied));
         }
         return Optional.ofNullable(BujeokDtoMapper.INSTANCE.BujeokToBujeokDto(notReplied));
@@ -70,10 +69,9 @@ public class BujeokService {
 
         log.info("memberId로 검색 : "+byMember_memberId);
 
-//        if(byMemberId.isEmpty()){
-//            return Optional.ofNullable(null);
-//        }
-
+        if(byMember_memberId.get(0).isReplied()==false){
+            return Optional.ofNullable(BujeokDtoMapper.INSTANCE.BujeokToBujeokDtoWithoutReply(byMember_memberId.get(0)));
+        }
         return Optional.ofNullable(BujeokDtoMapper.INSTANCE.BujeokToBujeokDto(byMember_memberId.get(0)));
     }
 }
