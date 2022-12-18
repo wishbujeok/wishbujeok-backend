@@ -55,6 +55,10 @@ public class ReplyService {
         Bujeok bujeok = found.get(0);
         Reply reply = bujeok.getReply();
 
+        if(!bujeok.isReplied()){ //Todo 답변이 없을 경우 delete요청 안되도록
+            return;
+        }
+
         log.info("Bujeok : "+found.get(0));
         log.info("found안에 reply : "+found.get(0).getReply());
 
