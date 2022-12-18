@@ -25,16 +25,14 @@ public class BujeokService {
 
     public Optional<BujeokDto> getOtherBujeok(){
 
-        Long id = 1L; // 후에 다른사람의 부적 선택하는 비즈니스 로직 추가 예정
-        Optional<Bujeok> byId = bujeokRepository.findById(1L);
+        Bujeok notReplied = bujeokRepository.findFirstByReplied(false).orElseThrow();
 
-        if(byId.isEmpty()){
-            return Optional.ofNullable(null);
+
+
+        if(notReplied.getReply()==null){
+            return Optional.ofNullable(BujeokDtoMapper.INSTANCE.BujeokToBujeokDtoWithoutReply(notReplied));
         }
-        if(byId.get().getReply()==null){
-            return Optional.ofNullable(BujeokDtoMapper.INSTANCE.BujeokToBujeokDtoWithoutReply(byId.get()));
-        }
-        return Optional.ofNullable(BujeokDtoMapper.INSTANCE.BujeokToBujeokDto(byId.get()));
+        return Optional.ofNullable(BujeokDtoMapper.INSTANCE.BujeokToBujeokDto(notReplied));
     }
 
     public Optional<BujeokDto> findById(long id){

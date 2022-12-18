@@ -1,7 +1,10 @@
 package com.example.app.reply.service;
 
 import com.example.app.auth.entity.Member;
+import com.example.app.auth.repository.MemberRepository;
+import com.example.app.auth.service.MemberService;
 import com.example.app.bujeok.entity.Bujeok;
+import com.example.app.bujeok.entity.dto.BujeokDto;
 import com.example.app.bujeok.repository.BujeokRepository;
 import com.example.app.reply.entity.Reply;
 import com.example.app.reply.entity.dto.ReplyCreateDto;
@@ -13,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -21,6 +25,7 @@ import java.util.Optional;
 public class ReplyService {
     private final ReplyRepository replyRepository;
     private final BujeokRepository bujeokRepository;
+    private final MemberRepository memberRepository;
 
     public ReplyDto create(ReplyCreateDto replyCreateDto, Member member){
         Optional<Bujeok> found = bujeokRepository.findById(replyCreateDto.getOtherWishId());
@@ -36,6 +41,7 @@ public class ReplyService {
 
         Reply reply = ReplyCreateMapper.INSTANCE.replyCreateToReply(content,bujeok,member);
         bujeok.setReply(reply);
+        bujeok.setReplied(true);
         log.info("reply : " + reply);
 
         replyRepository.save(reply);
@@ -43,7 +49,15 @@ public class ReplyService {
         return ReplyDtoMapper.INSTANCE.replyToReplyDto(reply);
     }
 
-    public void delete(long l) {
+    public void delete(String memberId) {
+        //Todo 추후에 수정
+        List<Bujeok> found = bujeokRepository.findByMember_MemberId(memberId);
+        Bujeok bujeok = found.get(0);
+        bujeok.setReplied(false);
 
+        log.info("Bujeok : "+found.get(0));
+        log.info("found안에 reply : "+found.get(0).getReply());
+
+        replyRepository.delete(found.get(0).getReply());
     }
 }

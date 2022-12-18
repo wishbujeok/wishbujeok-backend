@@ -32,9 +32,12 @@ public class Bujeok extends BaseEntity {
     private Category category;
     private String content;
     private String backUrl;
-
+    private boolean replied;
     // TODO: 2022-12-08 추후에 수정방법 찾기
     public void setReply(Reply reply) {
         this.reply = reply;
+    }
+    public void setReplied(boolean replied){
+        this.replied = replied;
     }
 }

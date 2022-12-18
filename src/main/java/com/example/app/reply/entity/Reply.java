@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -17,6 +19,8 @@ import javax.persistence.OneToOne;
 @NoArgsConstructor
 @SuperBuilder
 @ToString(callSuper = true)
+@SQLDelete(sql = "UPDATE reply SET deleted = true WHERE id = ?")
+@Where(clause = "deleted = false")
 public class Reply extends BaseEntity {
     @OneToOne(mappedBy = "reply")
     private Bujeok bujeok;
@@ -26,4 +30,5 @@ public class Reply extends BaseEntity {
     private Member member;
 
     private String content;
+    private boolean deleted = Boolean.FALSE;
 }

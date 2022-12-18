@@ -5,6 +5,7 @@ import com.example.app.auth.entity.MemberContext;
 import com.example.app.auth.service.MemberService;
 import com.example.app.base.api.ApiResult;
 import com.example.app.bujeok.entity.dto.BujeokDto;
+import com.example.app.bujeok.entity.dto.mapper.BujeokDtoMapper;
 import com.example.app.bujeok.service.BujeokService;
 import com.example.app.reply.service.ReplyService;
 import lombok.RequiredArgsConstructor;
@@ -38,9 +39,15 @@ public class ReplyController {
 
         return OK(bujeokDto);
     }
-//    @DeleteMapping
-//    public ApiResult<BujeokDto> deleteReply(){
-//        replyService.delete(1L);
-//    }
+
+    @DeleteMapping
+    public ApiResult<BujeokDto> deleteReply(@AuthenticationPrincipal MemberContext memberContext){
+        replyService.delete(memberContext.getMemberId());
+
+        BujeokDto found = bujeokService.findByMemberId(memberContext.getMemberId()).orElseThrow();
+
+        log.info(String.valueOf(found));
+        return OK(found);
+    }
 
 }
