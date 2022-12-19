@@ -1,12 +1,12 @@
 package com.example.app.reply;
 
-import com.example.app.bujeok.entity.Bujeok;
-import com.example.app.bujeok.entity.dto.BujeokDto;
-import com.example.app.bujeok.entity.dto.mapper.BujeokDtoMapper;
-import com.example.app.bujeok.service.BujeokService;
-import com.example.app.reply.entity.dto.ReplyCreateDto;
-import com.example.app.reply.entity.dto.ReplyDto;
-import com.example.app.reply.service.ReplyService;
+import com.example.app.domain.bujeok.entity.Bujeok;
+import com.example.app.domain.bujeok.entity.dto.BujeokDto;
+import com.example.app.domain.bujeok.entity.dto.mapper.BujeokDtoMapper;
+import com.example.app.domain.bujeok.service.BujeokService;
+import com.example.app.domain.reply.entity.dto.ReplyCreateDto;
+import com.example.app.domain.reply.entity.dto.ReplyDto;
+import com.example.app.domain.reply.service.ReplyService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

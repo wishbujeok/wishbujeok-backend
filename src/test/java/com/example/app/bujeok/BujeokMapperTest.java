@@ -1,10 +1,9 @@
 package com.example.app.bujeok;
 
-import com.example.app.bujeok.entity.Bujeok;
-import com.example.app.Category.entity.Category;
-import com.example.app.bujeok.entity.dto.BujeokCreateDto;
-import com.example.app.bujeok.entity.dto.BujeokDto;
-import com.example.app.bujeok.entity.dto.mapper.BujeokCreateMapper;
+import com.example.app.domain.bujeok.entity.Bujeok;
+import com.example.app.domain.Category.entity.Category;
+import com.example.app.domain.bujeok.entity.dto.BujeokCreateDto;
+import com.example.app.domain.bujeok.entity.dto.mapper.BujeokCreateMapper;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

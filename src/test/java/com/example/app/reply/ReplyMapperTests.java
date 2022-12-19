@@ -1,12 +1,12 @@
 package com.example.app.reply;
 
-import com.example.app.bujeok.entity.Bujeok;
-import com.example.app.bujeok.entity.dto.BujeokCreateDto;
-import com.example.app.reply.entity.Reply;
-import com.example.app.reply.entity.dto.ReplyCreateDto;
-import com.example.app.reply.entity.dto.ReplyDto;
-import com.example.app.reply.entity.dto.mapper.ReplyCreateMapper;
-import com.example.app.reply.entity.dto.mapper.ReplyDtoMapper;
+import com.example.app.domain.bujeok.entity.Bujeok;
+import com.example.app.domain.bujeok.entity.dto.BujeokCreateDto;
+import com.example.app.domain.reply.entity.Reply;
+import com.example.app.domain.reply.entity.dto.ReplyCreateDto;
+import com.example.app.domain.reply.entity.dto.ReplyDto;
+import com.example.app.domain.reply.entity.dto.mapper.ReplyCreateMapper;
+import com.example.app.domain.reply.entity.dto.mapper.ReplyDtoMapper;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
