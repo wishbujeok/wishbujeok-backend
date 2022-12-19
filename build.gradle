@@ -47,6 +47,9 @@ dependencies {
 	implementation 'org.mapstruct:mapstruct:1.4.2.Final'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
 
+	//swagger 적용
+	implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.6.13'
+
 	// https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-ui
 	implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.6.13'
 
@@ -54,6 +57,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
 
 }
 

@@ -1,6 +1,7 @@
 package com.example.app.bujeok.entity;
 
 import com.example.app.Category.entity.Category;
+import com.example.app.auth.entity.Member;
 import com.example.app.base.entity.BaseEntity;
 import com.example.app.reply.entity.Reply;
 import lombok.Getter;
@@ -17,7 +18,10 @@ import javax.persistence.OneToOne;
 @NoArgsConstructor
 @SuperBuilder
 public class Bujeok extends BaseEntity {
-    private Long userId;
+//    private Long userId;
+    @OneToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @OneToOne
     @JoinColumn(name = "reply_id")
@@ -28,9 +32,12 @@ public class Bujeok extends BaseEntity {
     private Category category;
     private String content;
     private String backUrl;
-
+    private boolean replied;
     // TODO: 2022-12-08 추후에 수정방법 찾기
     public void setReply(Reply reply) {
         this.reply = reply;
+    }
+    public void setReplied(boolean replied){
+        this.replied = replied;
     }
 }

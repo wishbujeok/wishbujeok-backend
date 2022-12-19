@@ -1,6 +1,9 @@
 package com.example.app.bujeok.controller;
 
 import com.example.app.Category.entity.dto.CategoryDto;
+import com.example.app.auth.entity.Member;
+import com.example.app.auth.entity.MemberContext;
+import com.example.app.auth.service.MemberService;
 import com.example.app.base.api.ApiResult;
 import com.example.app.bujeok.entity.Bujeok;
 import com.example.app.Category.entity.Category;
@@ -18,6 +21,7 @@ import com.example.util.Util;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -34,13 +38,15 @@ public class BujeokController {
     private final BujeokService bujeokService;
     private final CategoryService categoryService;
     private final ReplyService replyService;
+    private final MemberService memberService;
 
     /** 부적 생성 페이지 접속시
      *  현재 사용자 명과 다른 사람 소원메시지 보내줘야함
      * */
     @GetMapping()
-    public ApiResult<BujeokCreateResponse> getCreatePage(){
+    public ApiResult<BujeokCreateResponse> getCreatePage(@AuthenticationPrincipal MemberContext memberContext){
         Optional<BujeokDto> found = bujeokService.getOtherBujeok();
+
 
         if(found.isEmpty()){ // 디비에 저장된 부적이 하나도 없을 경우
             ERROR(new NotFoundException(Bujeok.class), HttpStatus.NO_CONTENT);
@@ -48,7 +54,10 @@ public class BujeokController {
 
         BujeokDto bujeokDto = found.get();
 
-        String username = "user1"; // TODO : 후에 변경
+        String username = memberContext.getNickname(); // TODO : 후에 변경
+
+
+        log.info("이름: "+memberContext.getNickname());
 
         BujeokCreateResponse bujeokCreateResponse = BujeokCreateResponse.builder()
                 .otherWish(bujeokDto.getContent())
@@ -64,11 +73,17 @@ public class BujeokController {
      * 부적 content와 다른 사람의 소원 메시지의 응원메시지 받아야 함
      */
     @PostMapping()
-    public ApiResult<BujeokDto> createBujeok(@RequestBody BujeokCreateDto bujeokCreateDTO){
+    public ApiResult<BujeokDto> createBujeok(@RequestBody BujeokCreateDto bujeokCreateDTO, @AuthenticationPrincipal MemberContext memberContext){
         log.info("otherWishId : "+bujeokCreateDTO.getOtherWishId());
+
+        // Todo 한번만 생성할 수 있도록 수정해야함 -> 테스트 때문에 지금은 가능
 
         long count = categoryService.getCategoryCount();
         long categoryNum = Util.getRandomNum(count);
+
+        log.info("이름: "+memberContext.getNickname());
+
+        Member member = memberService.findByMemberId(memberContext.getMemberId()).orElseThrow();
 
         if(bujeokService.findById(bujeokCreateDTO.getOtherWishId()).isEmpty()){ // otherWishId에 해당하는 부적이 없을때
             log.info("bujeok이 비었음");
@@ -76,14 +91,14 @@ public class BujeokController {
         else{
             // 후에 otherWishId를 통해 다른사람 소원에 대한 응원 메시지 저장 기능 추가
             ReplyCreateDto replyCreateDto = ReplyCreateMapper.INSTANCE.bujeokCreateDtoToReplyCreateDto(bujeokCreateDTO);
-            ReplyDto replyDto = replyService.create(replyCreateDto);
+            ReplyDto replyDto = replyService.create(replyCreateDto,member);
             log.info("reply : "+replyDto);
         }
 
 
         Optional<CategoryDto> found = categoryService.findById(categoryNum);// 입력 받을지 여부 후에 결정
 
-        BujeokDto bujeokDto = bujeokService.create(found.get(), bujeokCreateDTO);
+        BujeokDto bujeokDto = bujeokService.create(found.get(), bujeokCreateDTO,member);
 
         return OK(bujeokDto);
     }

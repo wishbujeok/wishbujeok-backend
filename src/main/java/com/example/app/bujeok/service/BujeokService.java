@@ -3,6 +3,7 @@ package com.example.app.bujeok.service;
 import com.example.app.Category.entity.Category;
 import com.example.app.Category.entity.dto.CategoryDto;
 import com.example.app.Category.entity.mapper.CategoryDtoMapper;
+import com.example.app.auth.entity.Member;
 import com.example.app.bujeok.entity.Bujeok;
 import com.example.app.bujeok.entity.dto.BujeokCreateDto;
 import com.example.app.bujeok.entity.dto.BujeokDto;
@@ -10,10 +11,13 @@ import com.example.app.bujeok.entity.dto.mapper.BujeokCreateMapper;
 import com.example.app.bujeok.entity.dto.mapper.BujeokDtoMapper;
 import com.example.app.bujeok.repository.BujeokRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class BujeokService {
@@ -21,14 +25,13 @@ public class BujeokService {
 
     public Optional<BujeokDto> getOtherBujeok(){
 
-        Long id = 1L; // 후에 다른사람의 부적 선택하는 비즈니스 로직 추가 예정
-        Optional<Bujeok> byId = bujeokRepository.findById(1L);
+        Bujeok notReplied = bujeokRepository.findFirstByReplied(false).orElseThrow();
 
-        if(byId.isEmpty()){
-            return Optional.ofNullable(null);
+        log.info("확인 : "+notReplied.isReplied());
+        if(notReplied.isReplied()==false){
+            return Optional.ofNullable(BujeokDtoMapper.INSTANCE.BujeokToBujeokDtoWithoutReply(notReplied));
         }
-
-        return Optional.ofNullable(BujeokDtoMapper.INSTANCE.BujeokToBujeokDto(byId.get()));
+        return Optional.ofNullable(BujeokDtoMapper.INSTANCE.BujeokToBujeokDto(notReplied));
     }
 
     public Optional<BujeokDto> findById(long id){
@@ -39,19 +42,36 @@ public class BujeokService {
             return Optional.ofNullable(null);
         }
 
+        if(byId.get().getReply()==null){
+            return Optional.ofNullable(BujeokDtoMapper.INSTANCE.BujeokToBujeokDtoWithoutReply(byId.get()));
+        }
         return Optional.ofNullable(BujeokDtoMapper.INSTANCE.BujeokToBujeokDto(byId.get()));
     }
 
 
 
-    public BujeokDto create(CategoryDto categoryDto, BujeokCreateDto bujeokCreateDTO){
+    public BujeokDto create(CategoryDto categoryDto, BujeokCreateDto bujeokCreateDTO, Member member){
         Category category = CategoryDtoMapper.INSTANCE.CategoryDtoToCategory(categoryDto);
 
-        Bujeok bujeok = BujeokCreateMapper.INSTANCE.bujeokCraeteDTOToEntity(bujeokCreateDTO, category);
+        Bujeok bujeok = BujeokCreateMapper.INSTANCE.bujeokCraeteDTOToEntity(bujeokCreateDTO, category,member);
 
+        log.info("부적 생성시 : "+bujeok.getMember().getNickname());
         bujeokRepository.save(bujeok);
 
-        return BujeokDtoMapper.INSTANCE.BujeokToBujeokDto(bujeok);
+
+        return BujeokDtoMapper.INSTANCE.BujeokToBujeokDtoWithoutReply(bujeok);
     }
 
+    public Optional<BujeokDto> findByMemberId(String memberId) {
+//        Optional<Bujeok> byMemberId = bujeokRepository.findByMember_MemberId(memberId);
+
+        List<Bujeok> byMember_memberId = bujeokRepository.findByMember_MemberId(memberId);
+
+        log.info("memberId로 검색 : "+byMember_memberId);
+
+        if(byMember_memberId.get(0).isReplied()==false){
+            return Optional.ofNullable(BujeokDtoMapper.INSTANCE.BujeokToBujeokDtoWithoutReply(byMember_memberId.get(0)));
+        }
+        return Optional.ofNullable(BujeokDtoMapper.INSTANCE.BujeokToBujeokDto(byMember_memberId.get(0)));
+    }
 }

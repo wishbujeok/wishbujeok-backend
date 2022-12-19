@@ -1,5 +1,6 @@
 package com.example.app.reply.entity.dto.mapper;
 
+import com.example.app.auth.entity.Member;
 import com.example.app.bujeok.entity.Bujeok;
 import com.example.app.bujeok.entity.dto.BujeokCreateDto;
 import com.example.app.reply.entity.Reply;
@@ -17,7 +18,8 @@ public interface ReplyCreateMapper {
     @Mapping(target = "modifyDate", ignore = true)
     @Mapping(source="buj", target="bujeok")
     @Mapping(source="cheerUp", target = "content")
-    Reply replyCreateToReply(String cheerUp, Bujeok buj);
+    @Mapping(source="member", target = "member")
+    Reply replyCreateToReply(String cheerUp, Bujeok buj, Member member);
 
     ReplyCreateDto bujeokCreateDtoToReplyCreateDto(BujeokCreateDto bujeokCreateDto);
 }
