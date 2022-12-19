@@ -1,7 +1,7 @@
 package com.example.app.category;
 
-import com.example.app.Category.Service.CategoryService;
-import com.example.app.Category.entity.dto.CategoryDto;
+import com.example.app.domain.Category.Service.CategoryService;
+import com.example.app.domain.Category.entity.dto.CategoryDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

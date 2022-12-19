@@ -1,6 +1,5 @@
 package com.example.app.global.config;
 
-import com.example.app.config.JasyptConfig;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.junit.jupiter.api.Test;
 
