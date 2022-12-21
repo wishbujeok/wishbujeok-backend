@@ -10,6 +10,7 @@ import com.example.app.domain.bujeok.entity.dto.BujeokDto;
 import com.example.app.domain.bujeok.entity.dto.mapper.BujeokCreateMapper;
 import com.example.app.domain.bujeok.entity.dto.mapper.BujeokDtoMapper;
 import com.example.app.domain.bujeok.repository.BujeokRepository;
+import com.example.app.global.error.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,15 +24,11 @@ import java.util.Optional;
 public class BujeokService {
     private final BujeokRepository bujeokRepository;
 
-    public Optional<BujeokDto> getOtherBujeok(){
+    public BujeokDto getOtherBujeok(){
 
-        Bujeok notReplied = bujeokRepository.findFirstByReplied(false).orElseThrow();
-
-        log.info("확인 : "+notReplied.isReplied());
-        if(notReplied.isReplied()==false){
-            return Optional.ofNullable(BujeokDtoMapper.INSTANCE.BujeokToBujeokDtoWithoutReply(notReplied));
-        }
-        return Optional.ofNullable(BujeokDtoMapper.INSTANCE.BujeokToBujeokDto(notReplied));
+        return BujeokDtoMapper.INSTANCE.BujeokToBujeokDto(
+                bujeokRepository.findFirstByReplied(false).orElseThrow(() -> new NotFoundException(Bujeok.class, 1))
+        );
     }
 
     public Optional<BujeokDto> findById(long id){
