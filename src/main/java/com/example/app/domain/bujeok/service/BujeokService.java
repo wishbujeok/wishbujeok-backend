@@ -53,6 +53,12 @@ public class BujeokService {
     public BujeokDto create(CategoryDto categoryDto, BujeokCreateDto bujeokCreateDTO, Member member){
         Category category = CategoryDtoMapper.INSTANCE.CategoryDtoToCategory(categoryDto);
 
+        Optional<Bujeok> found = bujeokRepository.findByMember_MemberId(member.getMemberId());
+        if(found.isPresent()){
+            //Todo 오류 처리
+            return BujeokDtoMapper.INSTANCE.BujeokToBujeokDto(found.get());
+        }
+
         Bujeok bujeok = BujeokCreateMapper.INSTANCE.bujeokCraeteDTOToEntity(bujeokCreateDTO, category,member);
 
         log.info("부적 생성시 : "+bujeok.getMember().getNickname());
@@ -63,15 +69,13 @@ public class BujeokService {
     }
 
     public Optional<BujeokDto> findByMemberId(String memberId) {
-//        Optional<Bujeok> byMemberId = bujeokRepository.findByMember_MemberId(memberId);
-
-        List<Bujeok> byMember_memberId = bujeokRepository.findByMember_MemberId(memberId);
+        Optional<Bujeok> byMember_memberId = bujeokRepository.findByMember_MemberId(memberId);
 
         log.info("memberId로 검색 : "+byMember_memberId);
 
-        if(byMember_memberId.get(0).isReplied()==false){
-            return Optional.ofNullable(BujeokDtoMapper.INSTANCE.BujeokToBujeokDtoWithoutReply(byMember_memberId.get(0)));
+        if(byMember_memberId.get().isReplied()==false){
+            return Optional.ofNullable(BujeokDtoMapper.INSTANCE.BujeokToBujeokDtoWithoutReply(byMember_memberId.get()));
         }
-        return Optional.ofNullable(BujeokDtoMapper.INSTANCE.BujeokToBujeokDto(byMember_memberId.get(0)));
+        return Optional.ofNullable(BujeokDtoMapper.INSTANCE.BujeokToBujeokDto(byMember_memberId.get()));
     }
 }
