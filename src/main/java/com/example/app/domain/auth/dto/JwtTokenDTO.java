@@ -10,7 +10,7 @@ public class JwtTokenDTO {
 
     private String accessToken;
     private String refreshToken;
-
+    private boolean hasBujeok;
     @Builder
     public JwtTokenDTO(String accessToken, String refreshToken) {
         this.accessToken = accessToken;

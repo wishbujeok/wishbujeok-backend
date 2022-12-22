@@ -1,9 +1,15 @@
 package com.example.app.global.common.util;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.support.MessageSourceAccessor;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+@RequiredArgsConstructor
 public class Util {
+    private final MessageSourceAccessor messageSourceAccessor;
+
     public static Long getRandomNum(long size){
         // idx 1부터 시작
         Long randomNum = Double.valueOf(Math.random()*size).longValue()+1;
