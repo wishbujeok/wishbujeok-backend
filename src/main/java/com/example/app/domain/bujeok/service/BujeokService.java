@@ -10,6 +10,7 @@ import com.example.app.domain.bujeok.entity.dto.BujeokDto;
 import com.example.app.domain.bujeok.entity.dto.mapper.BujeokCreateMapper;
 import com.example.app.domain.bujeok.entity.dto.mapper.BujeokDtoMapper;
 import com.example.app.domain.bujeok.repository.BujeokRepository;
+import com.example.app.global.error.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -56,7 +57,8 @@ public class BujeokService {
         Optional<Bujeok> found = bujeokRepository.findByMember_MemberId(member.getMemberId());
         if(found.isPresent()){
             //Todo 오류 처리
-            return BujeokDtoMapper.INSTANCE.BujeokToBujeokDto(found.get());
+//            return BujeokDtoMapper.INSTANCE.BujeokToBujeokDto(found.get());
+            throw new NotFoundException(Bujeok.class);
         }
 
         Bujeok bujeok = BujeokCreateMapper.INSTANCE.bujeokCraeteDTOToEntity(bujeokCreateDTO, category,member);

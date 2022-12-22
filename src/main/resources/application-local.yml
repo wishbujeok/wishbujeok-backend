@@ -5,7 +5,7 @@ spring:
     password: wishbujeok1234
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
 oauth:
   provider:
     kakao:
