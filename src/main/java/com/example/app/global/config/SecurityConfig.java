@@ -25,8 +25,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationConfiguration authenticationConfiguration) throws Exception {
         http
                 .httpBasic().disable()
-                .cors().configurationSource(corsConfigurationSource())// 타 도메인에서 API 호출 가능
-                .and()
+                .cors().disable()// 타 도메인에서 API 호출 가능
+
                     .csrf().disable() // CSRF 토큰 끄기
                     .formLogin().disable() // 폼 로그인 방식 끄기
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -51,21 +51,5 @@ public class SecurityConfig {
 
         return http.build();
     }
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.addAllowedOrigin("*");
-        configuration.addAllowedHeader("*");
-        configuration.addAllowedMethod("*");
-        configuration.setAllowCredentials(true);
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
-    @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
 }
