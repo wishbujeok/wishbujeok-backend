@@ -49,16 +49,16 @@ public class ReplyService {
 
     public void delete(String memberId) {
         //Todo 추후에 수정
-        List<Bujeok> found = bujeokRepository.findByMember_MemberId(memberId);
-        Bujeok bujeok = found.get(0);
+        Optional<Bujeok> found = bujeokRepository.findByMember_MemberId(memberId);
+        Bujeok bujeok = found.get();
         Reply reply = bujeok.getReply();
 
         if(!bujeok.isReplied()){ //Todo 답변이 없을 경우 delete요청 안되도록
             return;
         }
 
-        log.info("Bujeok : "+found.get(0));
-        log.info("found안에 reply : "+found.get(0).getReply());
+        log.info("Bujeok : "+found.get());
+        log.info("found안에 reply : "+found.get().getReply());
 
         bujeok.setReplied(false);
         bujeok.setReply(null);

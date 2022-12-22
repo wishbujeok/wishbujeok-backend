@@ -25,8 +25,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationConfiguration authenticationConfiguration) throws Exception {
         http
                 .httpBasic().disable()
-                .cors().disable()// 타 도메인에서 API 호출 가능
-
+                .cors().configurationSource(corsConfigurationSource())// 타 도메인에서 API 호출 가능
+                .and()
                     .csrf().disable() // CSRF 토큰 끄기
                     .formLogin().disable() // 폼 로그인 방식 끄기
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -36,7 +36,7 @@ public class SecurityConfig {
                                     .antMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                                     .antMatchers( "/**/login", "/auth/token").permitAll()
                                     // TODO : 임시적용
-//                                    .antMatchers("/**").permitAll()
+                                    .antMatchers("/**").permitAll()
                                     .anyRequest()
                                     .authenticated() // 최소자격 : 로그인
                     )
@@ -51,5 +51,21 @@ public class SecurityConfig {
 
         return http.build();
     }
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
 
+        configuration.addAllowedOriginPattern("*");
+        configuration.addAllowedHeader("*");
+        configuration.addAllowedMethod("*");
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
 }

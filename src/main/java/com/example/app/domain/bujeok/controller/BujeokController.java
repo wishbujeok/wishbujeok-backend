@@ -68,7 +68,7 @@ public class BujeokController {
     public ApiResult<BujeokDto> createBujeok(@RequestBody BujeokCreateDto bujeokCreateDTO, @AuthenticationPrincipal MemberContext memberContext){
         log.info("otherWishId : "+bujeokCreateDTO.getOtherWishId());
 
-        // Todo 한번만 생성할 수 있도록 수정해야함 -> 테스트 때문에 지금은 가능
+        // Todo 현재 한번만 생성 가능하도록 수정, 따로 오류 메시지는 출력 X
 
         long count = categoryService.getCategoryCount();
         long categoryNum = Util.getRandomNum(count);
