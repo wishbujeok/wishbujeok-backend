@@ -5,6 +5,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
@@ -13,8 +16,8 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
-    @PostMapping()
-    public void createCategory(){
-//        categoryService.create("1.jpg");
+    @PostMapping("/create")
+    public void createCategory(MultipartFile file) throws IOException {
+        categoryService.create(file);
     }
 }

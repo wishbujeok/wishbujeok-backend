@@ -11,7 +11,5 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @ToString(callSuper = true)
 public class CategoryDto extends BaseEntity {
-//    @OneToMany(mappedBy = "category")
-//    private List<Bujeok> bujeoks;
-    private String frontUrl;
+    private byte[] base64;
 }
