@@ -11,6 +11,7 @@ import com.example.app.domain.bujeok.service.BujeokService;
 import com.example.app.domain.jwt.util.JwtUtil;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -22,8 +23,11 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class KakaoOauthService implements OauthService {
@@ -95,6 +99,11 @@ public class KakaoOauthService implements OauthService {
             JwtTokenDTO jwtTokenDTO = jwtUtil.generateToken(newMember);
             newMember.setRefreshToken(jwtTokenDTO.getRefreshToken());
             memberRepository.save(newMember);
+
+            log.info("asdmemberId : "+newMember.getMemberId());
+            log.info("asd bujeok : " + bujeokService.hasBujeok(newMember.getMemberId()));
+
+            //여기서 문제 발생
             jwtTokenDTO.setHasBujeok(bujeokService.hasBujeok(newMember.getMemberId()));
 
             return jwtTokenDTO;

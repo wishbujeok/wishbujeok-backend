@@ -27,7 +27,7 @@ public class BujeokService {
 
     public BujeokDto getOtherBujeok(){
 
-        return BujeokDtoMapper.INSTANCE.BujeokToBujeokDto(
+        return BujeokDtoMapper.INSTANCE.BujeokToBujeokDtoWithoutReply(
                 bujeokRepository.findFirstByReplied(false).orElseThrow(() -> new NotFoundException(Bujeok.class, 1))
         );
     }
@@ -74,6 +74,11 @@ public class BujeokService {
 
         log.info("memberId로 검색 : "+byMember_memberId);
 
+        // 만약 byMember_memberId가 비어있을 경우 null을 씌워서 보내야함
+        if(byMember_memberId.isEmpty()){
+            return Optional.ofNullable(null);
+        }
+
         if(byMember_memberId.get().isReplied()==false){
             return Optional.ofNullable(BujeokDtoMapper.INSTANCE.BujeokToBujeokDtoWithoutReply(byMember_memberId.get()));
         }
@@ -81,9 +86,9 @@ public class BujeokService {
     }
 
     public boolean hasBujeok(String memberId){
-        if(findByMemberId(memberId).get() != null){
-            return true;
-        }
-        return false;
+        log.info("service 에서 memberId : "+memberId);
+
+        // null일 경우 false 리턴 아닐 경우 true 리턴
+        return findByMemberId(memberId).isPresent();
     }
 }
