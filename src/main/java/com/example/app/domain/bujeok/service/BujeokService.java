@@ -10,6 +10,7 @@ import com.example.app.domain.bujeok.entity.dto.BujeokDto;
 import com.example.app.domain.bujeok.entity.dto.mapper.BujeokCreateMapper;
 import com.example.app.domain.bujeok.entity.dto.mapper.BujeokDtoMapper;
 import com.example.app.domain.bujeok.repository.BujeokRepository;
+import com.example.app.global.error.AlreadyExistException;
 import com.example.app.global.error.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -54,7 +55,7 @@ public class BujeokService {
         if(found.isPresent()){
             //Todo 오류 처리
 //            return BujeokDtoMapper.INSTANCE.BujeokToBujeokDto(found.get());
-            throw new NotFoundException(Bujeok.class);
+            throw new AlreadyExistException(Bujeok.class);
         }
 
         Bujeok bujeok = BujeokCreateMapper.INSTANCE.bujeokCraeteDTOToEntity(bujeokCreateDTO, category,member);
