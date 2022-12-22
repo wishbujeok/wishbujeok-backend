@@ -53,9 +53,8 @@ public class BujeokService {
 
         Optional<Bujeok> found = bujeokRepository.findByMember_MemberId(member.getMemberId());
         if(found.isPresent()){
-            //Todo 오류 처리
-//            return BujeokDtoMapper.INSTANCE.BujeokToBujeokDto(found.get());
-            throw new AlreadyExistException(Bujeok.class);
+            //Todo AlreadyExistException으로 수정
+            throw new NotFoundException(Bujeok.class,1);
         }
 
         Bujeok bujeok = BujeokCreateMapper.INSTANCE.bujeokCraeteDTOToEntity(bujeokCreateDTO, category,member);
