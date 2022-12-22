@@ -30,7 +30,7 @@ import static com.example.app.global.common.base.api.ApiResult.OK;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("bujeok-management/bujeok")
+@RequestMapping("/bujeok-management/bujeok")
 @Slf4j
 public class BujeokController {
 
@@ -44,14 +44,7 @@ public class BujeokController {
      * */
     @GetMapping()
     public ApiResult<BujeokCreateResponse> getCreatePage(@AuthenticationPrincipal MemberContext memberContext){
-        Optional<BujeokDto> found = bujeokService.getOtherBujeok();
-
-
-        if(found.isEmpty()){ // 디비에 저장된 부적이 하나도 없을 경우
-            ERROR(new NotFoundException(Bujeok.class), HttpStatus.NO_CONTENT);
-        }
-
-        BujeokDto bujeokDto = found.get();
+        BujeokDto bujeokDto = bujeokService.getOtherBujeok();
 
         String username = memberContext.getNickname(); // TODO : 후에 변경
 

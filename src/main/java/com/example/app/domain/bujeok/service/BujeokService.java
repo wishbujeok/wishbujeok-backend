@@ -24,15 +24,11 @@ import java.util.Optional;
 public class BujeokService {
     private final BujeokRepository bujeokRepository;
 
-    public Optional<BujeokDto> getOtherBujeok(){
+    public BujeokDto getOtherBujeok(){
 
-        Bujeok notReplied = bujeokRepository.findFirstByReplied(false).orElseThrow();
-
-        log.info("확인 : "+notReplied.isReplied());
-        if(notReplied.isReplied()==false){
-            return Optional.ofNullable(BujeokDtoMapper.INSTANCE.BujeokToBujeokDtoWithoutReply(notReplied));
-        }
-        return Optional.ofNullable(BujeokDtoMapper.INSTANCE.BujeokToBujeokDto(notReplied));
+        return BujeokDtoMapper.INSTANCE.BujeokToBujeokDto(
+                bujeokRepository.findFirstByReplied(false).orElseThrow(() -> new NotFoundException(Bujeok.class, 1))
+        );
     }
 
     public Optional<BujeokDto> findById(long id){
@@ -69,7 +65,9 @@ public class BujeokService {
 
         return BujeokDtoMapper.INSTANCE.BujeokToBujeokDtoWithoutReply(bujeok);
     }
-
+//        return BujeokDtoMapper.INSTANCE.BujeokToBujeokDto(
+//                bujeokRepository.findFirstByReplied(false).orElseThrow(() -> new NotFoundException(Bujeok.class, 1))
+//            );
     public Optional<BujeokDto> findByMemberId(String memberId) {
         Optional<Bujeok> byMember_memberId = bujeokRepository.findByMember_MemberId(memberId);
 
@@ -79,5 +77,12 @@ public class BujeokService {
             return Optional.ofNullable(BujeokDtoMapper.INSTANCE.BujeokToBujeokDtoWithoutReply(byMember_memberId.get()));
         }
         return Optional.ofNullable(BujeokDtoMapper.INSTANCE.BujeokToBujeokDto(byMember_memberId.get()));
+    }
+
+    public boolean hasBujeok(String memberId){
+        if(findByMemberId(memberId).get() != null){
+            return true;
+        }
+        return false;
     }
 }

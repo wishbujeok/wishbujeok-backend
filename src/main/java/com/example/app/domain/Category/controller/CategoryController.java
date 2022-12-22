@@ -15,6 +15,6 @@ public class CategoryController {
 
     @PostMapping()
     public void createCategory(){
-        categoryService.create("1.jpg");
+//        categoryService.create("1.jpg");
     }
 }

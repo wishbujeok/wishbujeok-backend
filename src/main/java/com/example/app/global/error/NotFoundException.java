@@ -1,5 +1,7 @@
 package com.example.app.global.error;
 
+import com.example.app.global.common.util.MessageUtils;
+import com.example.app.global.common.util.Util;
 import org.apache.commons.lang3.StringUtils;
 
 public class NotFoundException extends ServiceRuntimeException {
@@ -16,14 +18,15 @@ public class NotFoundException extends ServiceRuntimeException {
         super(MESSAGE_KEY, MESSAGE_DETAILS, new String[]{targetName, (values != null && values.length > 0) ? StringUtils.join(values, ",") : ""});
     }
 
-//    @Override
-//    public String getMessage() {
-//        return MessageUtils.getMessage(getDetailKey(), getParams());
-//    }
-//
-//    @Override
-//    public String toString() {
-//        return MessageUtils.getMessage(getMessageKey());
-//    }
+    @Override
+    public String getMessage() {
+
+        return MessageUtils.getMessage(getDetailKey(), getParams());
+    }
+
+    @Override
+    public String toString() {
+        return MessageUtils.getMessage(getMessageKey());
+    }
 
 }
