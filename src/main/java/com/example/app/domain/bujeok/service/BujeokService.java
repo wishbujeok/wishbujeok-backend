@@ -58,7 +58,9 @@ public class BujeokService {
 
         return BujeokDtoMapper.INSTANCE.BujeokToBujeokDtoWithoutReply(bujeok);
     }
-
+//        return BujeokDtoMapper.INSTANCE.BujeokToBujeokDto(
+//                bujeokRepository.findFirstByReplied(false).orElseThrow(() -> new NotFoundException(Bujeok.class, 1))
+//            );
     public Optional<BujeokDto> findByMemberId(String memberId) {
 //        Optional<Bujeok> byMemberId = bujeokRepository.findByMember_MemberId(memberId);
 
@@ -70,5 +72,12 @@ public class BujeokService {
             return Optional.ofNullable(BujeokDtoMapper.INSTANCE.BujeokToBujeokDtoWithoutReply(byMember_memberId.get(0)));
         }
         return Optional.ofNullable(BujeokDtoMapper.INSTANCE.BujeokToBujeokDto(byMember_memberId.get(0)));
+    }
+
+    public boolean hasBujeok(String memberId){
+        if(findByMemberId(memberId).get() != null){
+            return true;
+        }
+        return false;
     }
 }

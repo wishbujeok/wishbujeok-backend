@@ -7,6 +7,7 @@ import com.example.app.domain.auth.entity.AuthRole;
 import com.example.app.domain.auth.entity.Member;
 import com.example.app.domain.auth.properties.OauthProperties;
 import com.example.app.domain.auth.repository.MemberRepository;
+import com.example.app.domain.bujeok.service.BujeokService;
 import com.example.app.domain.jwt.util.JwtUtil;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,7 @@ public class KakaoOauthService implements OauthService {
     private final OauthProperties oauthProperties;
     private final RestTemplate restTemplate;
     private final MemberRepository memberRepository;
+    private final BujeokService bujeokService;
     private final Gson gson;
     private final JwtUtil jwtUtil;
     private OauthProperties.Kakao kakao;
@@ -93,7 +95,7 @@ public class KakaoOauthService implements OauthService {
             JwtTokenDTO jwtTokenDTO = jwtUtil.generateToken(newMember);
             newMember.setRefreshToken(jwtTokenDTO.getRefreshToken());
             memberRepository.save(newMember);
-
+            jwtTokenDTO.setHasBujeok(bujeokService.hasBujeok(newMember.getMemberId()));
 
             return jwtTokenDTO;
         }
