@@ -36,7 +36,7 @@ public class SecurityConfig {
                                     .antMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                                     .antMatchers( "/**/login", "/auth/token").permitAll()
                                     // TODO : 임시적용
-                                    .antMatchers("/**").permitAll()
+//                                    .antMatchers("/**").permitAll()
                                     .anyRequest()
                                     .authenticated() // 최소자격 : 로그인
                     )
