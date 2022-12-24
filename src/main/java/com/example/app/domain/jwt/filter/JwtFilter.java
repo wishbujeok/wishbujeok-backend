@@ -34,7 +34,7 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = extractToken(request.getHeader(AUTHORIZATION));
-        log.info(token);
+        log.info("Authorization header : " + token);
         if (StringUtils.hasText(token) && jwtUtil.validateToken(token)) {
             if(jwtUtil.getType(token).equals("RTK") && request.getRequestURI().equals("/auth/token")){
 

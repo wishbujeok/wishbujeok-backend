@@ -16,7 +16,7 @@ public class BujeokDto {
     private Long id;
     private String memberName;
     private String reply;
-    private String category;
+    private byte[] category;
     private String content;
     private String backUrl;
 }

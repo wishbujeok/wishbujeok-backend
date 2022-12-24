@@ -6,7 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 
 @Entity
 @Getter
@@ -14,5 +16,7 @@ import javax.persistence.Entity;
 @NoArgsConstructor
 @ToString(callSuper = true)
 public class Category extends BaseEntity {
-    private String frontUrl;
+    @Lob
+    @Column(columnDefinition="MEDIUMBLOB")
+    private byte[] base64;
 }
