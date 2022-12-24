@@ -16,7 +16,11 @@ public class BujeokDto {
     private Long id;
     private String memberName;
     private String reply;
-    private byte[] category;
+    private String category;
     private String content;
     private String backUrl;
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
 }
