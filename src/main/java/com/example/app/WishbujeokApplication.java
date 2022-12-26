@@ -11,5 +11,5 @@ public class WishbujeokApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(WishbujeokApplication.class, args);
 	}
-
+ 
 }
