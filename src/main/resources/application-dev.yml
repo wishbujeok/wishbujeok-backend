@@ -13,7 +13,7 @@ oauth:
       user_info_uri: https://kapi.kakao.com/v2/user/me
       grant_type: authorization_code
       client_id: 00ad4de0aee580b3d437724013c41cca
-      redirect_uri: http://localhost:3000/kakaoLogin
+      redirect_uri: https://wishbujeok.site/kakaoLogin
       client_secret: oj2pHvPdTTWjCUwIjgNhVXYjnsGgum9c
       rule:
         prefix: K
