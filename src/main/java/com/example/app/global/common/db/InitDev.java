@@ -25,7 +25,7 @@ import java.nio.file.Files;
 @Profile({"dev"})
 public class InitDev {
     // true 일때 DB 넣음
-    private boolean initData = true;
+    private boolean initData = false;
 
     @Bean
     CommandLineRunner init(

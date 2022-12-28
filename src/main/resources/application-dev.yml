@@ -5,7 +5,7 @@ spring:
     password: ENC(kE585+EAXwJuq1x3d/dCTW9Jekod8ux2)
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
 oauth:
   provider:
     kakao:
