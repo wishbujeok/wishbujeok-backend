@@ -87,6 +87,7 @@ public class KakaoOauthService implements OauthService {
                 JwtTokenDTO jwtTokenDTO = jwtUtil.generateToken(findMember);
                 findMember.setRefreshToken(jwtTokenDTO.getRefreshToken());
                 memberRepository.save(findMember);
+                jwtTokenDTO.setHasBujeok(bujeokService.hasBujeok(findMember.getMemberId()));
                 return jwtTokenDTO;
             }
 
