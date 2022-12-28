@@ -14,7 +14,7 @@ import lombok.experimental.SuperBuilder;
 @ToString(callSuper = true)
 public class BujeokDto {
     private Long id;
-    private String memberName;
+    private String userName;
     private String reply;
     private String category;
     private String content;
