@@ -3,6 +3,7 @@ package com.example.app.global.common.util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.support.MessageSourceAccessor;
 
+import java.io.UnsupportedEncodingException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -15,6 +16,17 @@ public class Util {
         Long randomNum = Double.valueOf(Math.random()*size).longValue()+1;
 
         return randomNum;
+    }
+
+    public static String byteArrToString(byte[] arr){
+        String s;
+        try {
+            s = new String(arr, "UTF8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+
+        return s;
     }
 
     public static <K, V> Map<K, V> mapOf(Object... args) {

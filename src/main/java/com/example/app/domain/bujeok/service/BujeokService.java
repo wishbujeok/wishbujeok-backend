@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+import static com.example.app.global.common.util.Util.byteArrToString;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -27,9 +29,12 @@ public class BujeokService {
 
     public BujeokDto getOtherBujeok(){
 
-        return BujeokDtoMapper.INSTANCE.BujeokToBujeokDtoWithoutReply(
-                bujeokRepository.findFirstByReplied(false).orElseThrow(() -> new NotFoundException(Bujeok.class, 1))
-        );
+        Bujeok bujeok = bujeokRepository.findFirstByReplied(false).orElseThrow(() -> new NotFoundException(Bujeok.class, 1));
+
+        BujeokDto bujeokDto = BujeokDtoMapper.INSTANCE.BujeokToBujeokDtoWithoutReply(bujeok);
+        bujeokDto.setCategory(byteArrToString(bujeok.getCategory().getBase64()));
+
+        return bujeokDto;
     }
 
     public Optional<BujeokDto> findById(long id){
@@ -40,15 +45,22 @@ public class BujeokService {
             return Optional.ofNullable(null);
         }
 
+        Bujeok bujeok = byId.get();
+
         if(byId.get().getReply()==null){
-            return Optional.ofNullable(BujeokDtoMapper.INSTANCE.BujeokToBujeokDtoWithoutReply(byId.get()));
+            BujeokDto bujeokDto = BujeokDtoMapper.INSTANCE.BujeokToBujeokDtoWithoutReply(byId.get());
+            bujeokDto.setCategory(byteArrToString(bujeok.getCategory().getBase64()));
+            return Optional.ofNullable(bujeokDto);
         }
-        return Optional.ofNullable(BujeokDtoMapper.INSTANCE.BujeokToBujeokDto(byId.get()));
+        BujeokDto bujeokDto = BujeokDtoMapper.INSTANCE.BujeokToBujeokDto(byId.get());
+        bujeokDto.setCategory(byteArrToString(bujeok.getCategory().getBase64()));
+
+        return Optional.ofNullable(bujeokDto);
     }
 
 
 
-    public BujeokDto create(CategoryDto categoryDto, BujeokCreateDto bujeokCreateDTO, Member member){
+    public BujeokDto create(CategoryDto categoryDto, BujeokCreateDto bujeokCreateDTO, Member member) {
         Category category = CategoryDtoMapper.INSTANCE.CategoryDtoToCategory(categoryDto);
 
         Optional<Bujeok> found = bujeokRepository.findByMember_MemberId(member.getMemberId());
@@ -62,8 +74,10 @@ public class BujeokService {
         log.info("부적 생성시 : "+bujeok.getMember().getNickname());
         bujeokRepository.save(bujeok);
 
+        BujeokDto bujeokDto = BujeokDtoMapper.INSTANCE.BujeokToBujeokDtoWithoutReply(bujeok);
+        bujeokDto.setCategory(byteArrToString(bujeok.getCategory().getBase64()));
 
-        return BujeokDtoMapper.INSTANCE.BujeokToBujeokDtoWithoutReply(bujeok);
+        return bujeokDto;
     }
 //        return BujeokDtoMapper.INSTANCE.BujeokToBujeokDto(
 //                bujeokRepository.findFirstByReplied(false).orElseThrow(() -> new NotFoundException(Bujeok.class, 1))
@@ -78,13 +92,20 @@ public class BujeokService {
             return Optional.ofNullable(null);
         }
 
+        Bujeok bujeok = byMember_memberId.get();
+
         if(byMember_memberId.get().isReplied()==false){
-            return Optional.ofNullable(BujeokDtoMapper.INSTANCE.BujeokToBujeokDtoWithoutReply(byMember_memberId.get()));
+            BujeokDto bujeokDto = BujeokDtoMapper.INSTANCE.BujeokToBujeokDtoWithoutReply(bujeok);
+            bujeokDto.setCategory(byteArrToString(bujeok.getCategory().getBase64()));
+            return Optional.ofNullable(bujeokDto);
         }
-        return Optional.ofNullable(BujeokDtoMapper.INSTANCE.BujeokToBujeokDto(byMember_memberId.get()));
+        BujeokDto bujeokDto = BujeokDtoMapper.INSTANCE.BujeokToBujeokDto(bujeok);
+        bujeokDto.setCategory(byteArrToString(bujeok.getCategory().getBase64()));
+
+        return Optional.ofNullable(bujeokDto);
     }
 
-    public boolean hasBujeok(String memberId){
+    public boolean hasBujeok(String memberId) {
         log.info("service 에서 memberId : "+memberId);
 
         // null일 경우 false 리턴 아닐 경우 true 리턴
