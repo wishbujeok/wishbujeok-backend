@@ -105,10 +105,14 @@ public class BujeokService {
         return Optional.ofNullable(bujeokDto);
     }
 
+    // TODO : 수정 필요합니다
     public boolean hasBujeok(String memberId) {
         log.info("service 에서 memberId : "+memberId);
-
+        Bujeok byMember_memberId = bujeokRepository.findByMember_MemberId(memberId).orElse(null);
+        if(byMember_memberId == null){
+            return false;
+        }
         // null일 경우 false 리턴 아닐 경우 true 리턴
-        return findByMemberId(memberId).isPresent();
+        return true;
     }
 }
