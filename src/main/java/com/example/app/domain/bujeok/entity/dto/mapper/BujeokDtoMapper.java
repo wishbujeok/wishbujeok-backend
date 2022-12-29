@@ -13,12 +13,14 @@ public interface BujeokDtoMapper {
 //    Bujeok BujeokDtoToBujeok(BujeokDto bujeokDto);
 
     @Mapping(target = "reply", expression = "java(bujeok.getReply().getContent())")
-    @Mapping(target = "category", ignore = true)
+    @Mapping(target = "imgURL", expression = "java(bujeok.getCategory().getImgURL())")
+    @Mapping(target = "backColor", expression = "java(bujeok.getCategory().getBackColor())")
     @Mapping(target = "userName",expression = "java(bujeok.getMember().getNickname())")
     BujeokDto BujeokToBujeokDto(Bujeok bujeok);
 
     @Mapping(target = "reply", ignore = true)
-    @Mapping(target = "category", ignore = true)
+    @Mapping(target = "imgURL", expression = "java(bujeok.getCategory().getImgURL())")
+    @Mapping(target = "backColor", expression = "java(bujeok.getCategory().getBackColor())")
     @Mapping(target = "userName",expression = "java(bujeok.getMember().getNickname())")
     BujeokDto BujeokToBujeokDtoWithoutReply(Bujeok bujeok);
 }

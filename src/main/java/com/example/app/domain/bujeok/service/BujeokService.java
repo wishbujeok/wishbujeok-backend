@@ -32,7 +32,6 @@ public class BujeokService {
         Bujeok bujeok = bujeokRepository.findFirstByReplied(false).orElseThrow(() -> new NotFoundException(Bujeok.class, 1));
 
         BujeokDto bujeokDto = BujeokDtoMapper.INSTANCE.BujeokToBujeokDtoWithoutReply(bujeok);
-        bujeokDto.setCategory(byteArrToString(bujeok.getCategory().getBase64()));
 
         return bujeokDto;
     }
@@ -49,11 +48,9 @@ public class BujeokService {
 
         if(byId.get().getReply()==null){
             BujeokDto bujeokDto = BujeokDtoMapper.INSTANCE.BujeokToBujeokDtoWithoutReply(byId.get());
-            bujeokDto.setCategory(byteArrToString(bujeok.getCategory().getBase64()));
             return Optional.ofNullable(bujeokDto);
         }
         BujeokDto bujeokDto = BujeokDtoMapper.INSTANCE.BujeokToBujeokDto(byId.get());
-        bujeokDto.setCategory(byteArrToString(bujeok.getCategory().getBase64()));
 
         return Optional.ofNullable(bujeokDto);
     }
@@ -72,10 +69,10 @@ public class BujeokService {
         Bujeok bujeok = BujeokCreateMapper.INSTANCE.bujeokCraeteDTOToEntity(bujeokCreateDTO, category,member);
 
         log.info("부적 생성시 : "+bujeok.getMember().getNickname());
+        log.info("부적 생성시 : "+bujeok.getCategory().getBackColor());
         bujeokRepository.save(bujeok);
 
         BujeokDto bujeokDto = BujeokDtoMapper.INSTANCE.BujeokToBujeokDtoWithoutReply(bujeok);
-        bujeokDto.setCategory(byteArrToString(bujeok.getCategory().getBase64()));
 
         return bujeokDto;
     }
@@ -96,11 +93,9 @@ public class BujeokService {
 
         if(byMember_memberId.get().isReplied()==false){
             BujeokDto bujeokDto = BujeokDtoMapper.INSTANCE.BujeokToBujeokDtoWithoutReply(bujeok);
-            bujeokDto.setCategory(byteArrToString(bujeok.getCategory().getBase64()));
             return Optional.ofNullable(bujeokDto);
         }
         BujeokDto bujeokDto = BujeokDtoMapper.INSTANCE.BujeokToBujeokDto(bujeok);
-        bujeokDto.setCategory(byteArrToString(bujeok.getCategory().getBase64()));
 
         return Optional.ofNullable(bujeokDto);
     }

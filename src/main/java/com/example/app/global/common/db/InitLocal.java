@@ -37,31 +37,16 @@ public class InitLocal {
                 return;
             }
 
-            String name = "bujeokImage/bujeok_1";
-
-            for(int i=0;i<=47;i++){
-                String filename = name+"-"+i+".png";
-
-                ClassPathResource resource = new ClassPathResource(filename);
-
-                File file = resource.getFile();
-
-                FileItem fileItem = new DiskFileItem("originFile", Files.probeContentType(file.toPath()), false, file.getName(), (int) file.length(), file.getParentFile());
-
-                try {
-                    InputStream input = new FileInputStream(file);
-                    OutputStream os = fileItem.getOutputStream();
-                    IOUtils.copy(input, os);
-                    // Or faster..
-                    // IOUtils.copy(new FileInputStream(file), fileItem.getOutputStream());
-                } catch (IOException ex) {
-                    // do something.
-                }
-
-                //jpa.png -> multipart 변환
-                MultipartFile mFile = new CommonsMultipartFile(fileItem);
-                categoryService.create(mFile);
-            }
+            CategoryDto categoryDto1 = CategoryDto.builder()
+                    .imgURL("https://kr.object.ncloudstorage.com/wishbujeok/bujeok_1-0.png")
+                    .backColor("#EDC0B8")
+                    .build();
+            categoryService.create(categoryDto1);
+            CategoryDto categoryDto2 = CategoryDto.builder()
+                    .imgURL("https://kr.object.ncloudstorage.com/wishbujeok/bujeok_1-1.png")
+                    .backColor("#92E0CC")
+                    .build();
+            categoryService.create(categoryDto2);
 
             MemberDto admin = new MemberDto("admin@wishbujeok.com", "admin", "admin@admin.com");
             memberService.save(admin);

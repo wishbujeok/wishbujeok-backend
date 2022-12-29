@@ -2,9 +2,7 @@ package com.example.app.domain.Category.entity.mapper;
 
 import com.example.app.domain.Category.entity.Category;
 import com.example.app.domain.Category.entity.dto.CategoryDto;
-import com.example.app.domain.Category.entity.dto.CategoryResponse;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 @Mapper

@@ -35,31 +35,7 @@ public class InitDev {
             if (!initData) {
                 return;
             }
-            String name = "bujeokImage/bujeok_1";
 
-            for(int i=0;i<=47;i++){
-                String filename = name+"-"+i+".png";
-
-                ClassPathResource resource = new ClassPathResource(filename);
-
-                File file = resource.getFile();
-
-                FileItem fileItem = new DiskFileItem("originFile", Files.probeContentType(file.toPath()), false, file.getName(), (int) file.length(), file.getParentFile());
-
-                try {
-                    InputStream input = new FileInputStream(file);
-                    OutputStream os = fileItem.getOutputStream();
-                    IOUtils.copy(input, os);
-                    // Or faster..
-                    // IOUtils.copy(new FileInputStream(file), fileItem.getOutputStream());
-                } catch (IOException ex) {
-                    // do something.
-                }
-
-                //jpa.png -> multipart 변환
-                MultipartFile mFile = new CommonsMultipartFile(fileItem);
-                categoryService.create(mFile);
-            }
 
             MemberDto admin = new MemberDto("admin@wishbujeok.com", "admin", "admin@admin.com");
             memberService.save(admin);
