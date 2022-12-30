@@ -25,7 +25,14 @@ public class CategoryService {
         }
         return Optional.ofNullable(CategoryDtoMapper.INSTANCE.CategoryToCategoryDto(found.get()));
     }
-
+    public Optional<Category> findByImgURL(String imgURL){
+        Optional<Category> found = categoryRepository.findByImgURL(imgURL);
+        if(found.isEmpty()){
+            return null;
+            // 예외 처리
+        }
+        return found;
+    }
     @Transactional
     public CategoryDto create(CategoryDto categoryDto) {
         Category newCategory = CategoryDtoMapper.INSTANCE.CategoryDtoToCategory(categoryDto);

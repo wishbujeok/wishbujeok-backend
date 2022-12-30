@@ -16,6 +16,7 @@ import javax.persistence.Lob;
 @NoArgsConstructor
 @ToString(callSuper = true)
 public class Category extends BaseEntity {
+    @Column(unique = true)
     private String imgURL;
     private String backColor;
 }
