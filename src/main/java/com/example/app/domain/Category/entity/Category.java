@@ -16,7 +16,7 @@ import javax.persistence.Lob;
 @NoArgsConstructor
 @ToString(callSuper = true)
 public class Category extends BaseEntity {
-    @Lob
-    @Column(columnDefinition="MEDIUMBLOB")
-    private byte[] base64;
+    @Column(unique = true)
+    private String imgURL;
+    private String backColor;
 }

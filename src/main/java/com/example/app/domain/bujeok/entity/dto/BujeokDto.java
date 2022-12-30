@@ -16,11 +16,11 @@ public class BujeokDto {
     private Long id;
     private String userName;
     private String reply;
-    private String category;
+
+    private String imgURL;
+    private String backColor;
+
     private String content;
     private String backUrl;
 
-    public void setCategory(String category) {
-        this.category = category;
-    }
 }

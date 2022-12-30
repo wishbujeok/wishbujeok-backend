@@ -3,6 +3,7 @@ package com.example.app.domain.bujeok.service;
 import com.example.app.domain.Category.entity.Category;
 import com.example.app.domain.Category.entity.dto.CategoryDto;
 import com.example.app.domain.Category.entity.mapper.CategoryDtoMapper;
+import com.example.app.domain.Category.repository.CategoryRepository;
 import com.example.app.domain.auth.entity.Member;
 import com.example.app.domain.bujeok.entity.Bujeok;
 import com.example.app.domain.bujeok.entity.dto.BujeokCreateDto;
@@ -26,13 +27,13 @@ import static com.example.app.global.common.util.Util.byteArrToString;
 @RequiredArgsConstructor
 public class BujeokService {
     private final BujeokRepository bujeokRepository;
+    private final CategoryRepository categoryRepository;
 
     public BujeokDto getOtherBujeok(){
 
         Bujeok bujeok = bujeokRepository.findFirstByReplied(false).orElseThrow(() -> new NotFoundException(Bujeok.class, 1));
 
         BujeokDto bujeokDto = BujeokDtoMapper.INSTANCE.BujeokToBujeokDtoWithoutReply(bujeok);
-        bujeokDto.setCategory(byteArrToString(bujeok.getCategory().getBase64()));
 
         return bujeokDto;
     }
@@ -49,11 +50,9 @@ public class BujeokService {
 
         if(byId.get().getReply()==null){
             BujeokDto bujeokDto = BujeokDtoMapper.INSTANCE.BujeokToBujeokDtoWithoutReply(byId.get());
-            bujeokDto.setCategory(byteArrToString(bujeok.getCategory().getBase64()));
             return Optional.ofNullable(bujeokDto);
         }
         BujeokDto bujeokDto = BujeokDtoMapper.INSTANCE.BujeokToBujeokDto(byId.get());
-        bujeokDto.setCategory(byteArrToString(bujeok.getCategory().getBase64()));
 
         return Optional.ofNullable(bujeokDto);
     }
@@ -61,7 +60,7 @@ public class BujeokService {
 
 
     public BujeokDto create(CategoryDto categoryDto, BujeokCreateDto bujeokCreateDTO, Member member) {
-        Category category = CategoryDtoMapper.INSTANCE.CategoryDtoToCategory(categoryDto);
+        Category category = categoryRepository.findByImgURL(categoryDto.getImgURL()).get();
 
         Optional<Bujeok> found = bujeokRepository.findByMember_MemberId(member.getMemberId());
         if(found.isPresent()){
@@ -70,12 +69,10 @@ public class BujeokService {
         }
 
         Bujeok bujeok = BujeokCreateMapper.INSTANCE.bujeokCraeteDTOToEntity(bujeokCreateDTO, category,member);
-
-        log.info("부적 생성시 : "+bujeok.getMember().getNickname());
+        
         bujeokRepository.save(bujeok);
 
         BujeokDto bujeokDto = BujeokDtoMapper.INSTANCE.BujeokToBujeokDtoWithoutReply(bujeok);
-        bujeokDto.setCategory(byteArrToString(bujeok.getCategory().getBase64()));
 
         return bujeokDto;
     }
@@ -96,11 +93,9 @@ public class BujeokService {
 
         if(byMember_memberId.get().isReplied()==false){
             BujeokDto bujeokDto = BujeokDtoMapper.INSTANCE.BujeokToBujeokDtoWithoutReply(bujeok);
-            bujeokDto.setCategory(byteArrToString(bujeok.getCategory().getBase64()));
             return Optional.ofNullable(bujeokDto);
         }
         BujeokDto bujeokDto = BujeokDtoMapper.INSTANCE.BujeokToBujeokDto(bujeok);
-        bujeokDto.setCategory(byteArrToString(bujeok.getCategory().getBase64()));
 
         return Optional.ofNullable(bujeokDto);
     }
